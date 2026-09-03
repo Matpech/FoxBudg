@@ -122,7 +122,7 @@ export async function checkSessionId(sessionId: string): Promise<JwtData> {
 export async function invalidateSessionId(sessionId: string): Promise<void> {
     try {
         await pool.query(
-            "DELETE FROM sessions WHERE id = $1",
+            "DELETE FROM sessions WHERE session_id = $1",
             [sessionId]
         )
     } catch (error) {

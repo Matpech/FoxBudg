@@ -2,8 +2,8 @@ import { Router } from "express";
 import validate from "../utils/validator/validator";
 import { loginSchema, sessionIdValue } from "../utils/validator/schemas/authSchemas";
 import type { LoginCredentials } from "../types/security";
-import { checkLoginCredentials, checkSessionId, generateSessionId, signJwt } from "../utils/auth";
-import { InvalidSessionException, ValidationException } from "../types/errors";
+import { checkLoginCredentials, checkSessionId, generateSessionId, invalidateSessionId, signJwt } from "../utils/auth";
+import { ApiException, InvalidSessionException, NotImplementedException, ValidationException } from "../types/errors";
 
 const router = Router()
 
@@ -17,7 +17,7 @@ router.post('/login', async (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        path: '/api/auth/refresh',
+        path: '/api/auth',
         maxAge: 30 * 24 * 60 * 60 * 1000
     })
 
@@ -50,6 +50,25 @@ router.post('/refresh', async (req, res) => {
     })
 
     res.sendStatus(204)
+})
+
+router.post('/logout', async (req, res) => {
+    const rawSessionId = req.cookies.session
+    if (!rawSessionId) throw new ValidationException("No session ID found inside the request")
+
+    const validationResult = sessionIdValue.validate(rawSessionId)
+    if (validationResult.error || !validationResult.value) throw new InvalidSessionException()
+    const sessionId = validationResult.value
+
+    const userData = await checkSessionId(sessionId)
+    if (userData.id !== req.user.id) {
+        throw new ApiException(403, "SESSION_MISMATCH", "This session does not belong to you")
+    } else {
+        await invalidateSessionId(sessionId)
+        res.clearCookie("jwt")
+        res.clearCookie("session", { path: '/api/auth' })
+        res.sendStatus(204)
+    }
 })
 
 export default router
