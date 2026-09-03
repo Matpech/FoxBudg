@@ -1,0 +1,1 @@
+CREATE TYPE user_roles AS ENUM ('employee', 'accountant', 'manager');
