@@ -95,9 +95,9 @@ export async function checkSessionId(sessionId: string): Promise<JwtData> {
                     u.first_name,
                     u.last_name,
                     u.role
-                FROM active_sessions s
+                FROM sessions s
                 INNER JOIN users u ON s.user_id = u.id
-                WHERE s.id = $1 AND s.expires_at 
+                WHERE s.session_id = $1 AND s.expires_at > NOW()
             `, [sessionId]
         )
 
