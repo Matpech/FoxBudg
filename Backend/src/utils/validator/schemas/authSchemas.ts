@@ -1,14 +1,17 @@
 import Joi from "joi";
 
-/**
- * Validation schema used to validate login credentials from a request body
- */
-export const loginSchema = Joi.object({
-    email: Joi.string().email({ minDomainSegments: 2 }).required(),
-    password: Joi.string().min(8).required()
-})
+// Reusable single value schemas for email/password requirements and other values
+export const emailSchema = Joi.string().email({ minDomainSegments: 2 })
+export const passwordSchema = Joi.string().min(8)
+export const sessionIdValue = Joi.string().hex().length(64)
 
 /**
- * Single value schema to validate session IDs (which are 64 hex characters)
+ * Validation schema used to validate login credentials from a request body
+ * 
+ * This schema accepts an optional `newPassword` field for when the user is asked to change his password during login
  */
-export const sessionIdValue = Joi.string().hex().length(64)
+export const loginSchema = Joi.object({
+    email: emailSchema.required(),
+    password: passwordSchema.required(),
+    newPassword: passwordSchema
+})

@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken"
 import type { JwtData, LoginCredentials } from "../types/security";
 import crypto from "crypto"
 import { pool } from "./db";
-import { ApiException, DatabaseException, InvalidSessionException } from "../types/errors";
+import { ApiException, DatabaseException, InvalidSessionException, NotFoundException } from "../types/errors";
 import { compareSync, hashSync } from "bcrypt";
 
 const JWT_LIFESPAN: string = process.env.JWT_LIFESPAN || "10m"
@@ -135,16 +135,43 @@ export async function invalidateSessionId(sessionId: string): Promise<void> {
  * 
  * @param userId The ID of the user that requested the password update
  * @param newPassword The new plaintext password to be hashed and inserted in the database
+ * @throws DatabaseException
  */
 export async function updateUserPassword(userId: number, newPassword: string): Promise<void> {
     const hashedPassword = hashSync(newPassword, 12)
     
     try {
         await pool.query(
-            "UPDATE users SET password_hash = $1 WHERE id = $2",
+            "UPDATE users SET password_hash = $1, password_changed = TRUE WHERE id = $2",
             [hashedPassword, userId]
         )
     } catch (error) {
+        throw new DatabaseException(error as Error)
+    }
+}
+
+/**
+ * Verify if a user needs to update his password during login
+ * 
+ * @param userId The ID of the user to verify
+ * @returns true if the user needs to change his password
+ * @throws NotFoundException or DatabaseException
+ */
+export async function needsToUpdatePassword(userId: number): Promise<boolean> {
+    try {
+        const result = await pool.query(
+            "SELECT password_changed FROM users WHERE id = $1",
+            [userId]
+        )
+
+        if (!result.rows[0]) {
+            throw new NotFoundException("User")
+        }
+
+        return (result.rows[0].password_changed === false)
+    } catch (error) {
+        if (error instanceof ApiException) throw error
+
         throw new DatabaseException(error as Error)
     }
 }
