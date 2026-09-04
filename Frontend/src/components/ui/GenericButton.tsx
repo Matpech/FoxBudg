@@ -9,7 +9,7 @@ interface Props {
 function GenericButton({ children, click, disabled }: Props) {
     return (
         <button
-            onClick={() => click}
+            onClick={() => click()}
             disabled={disabled}
             className="
                 bg-yellow-600 px-4 py-3

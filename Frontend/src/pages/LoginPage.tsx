@@ -1,14 +1,57 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import Card from "../components/ui/Card"
 import { KeyRound } from "lucide-react"
 import GenericButton from "../components/ui/GenericButton"
+import { useAuth } from "../hooks/useAuth"
+import { useNavigate } from "react-router-dom"
+import { useLocalizedPath } from "../hooks/useLocalizedPath"
+import ErrorBlock from "../components/ui/ErrorBlock"
 
 export function LoginPage() {
     const { t } = useTranslation('login')
+    const auth = useAuth()
+    const navigate = useNavigate()
+    const toLocalized = useLocalizedPath()
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [buttonDisabledOverride, setButtonDisabledOverride] = useState(false)
+
+    const [updateMode, setUpdateMode] = useState(false)
+    const [newPassword, setNewPassword] = useState("")
+    const [newPasswordConf, setNewPasswordConf] = useState("")
+
+    const buttonDisabled = useMemo(() => {
+        if (buttonDisabledOverride) return true
+
+        if (email.trim() === "") return true
+        if (password.trim().length < 8) return true
+
+        if (updateMode) {
+            if (newPassword.trim().length < 8) return true
+            if (newPassword.trim() !== newPasswordConf.trim()) return true
+        }
+
+        return false
+    }, [buttonDisabledOverride, email, password, updateMode, newPassword, newPasswordConf])
+
+    async function handleLogin() {
+        setButtonDisabledOverride(true)
+
+        const result = await auth.login(email, password, (updateMode ? newPassword : undefined))
+        if (result === "success") {
+            navigate(toLocalized("/dashboard"))
+            return
+        }
+
+        if (result === "password_change_required") {
+            setUpdateMode(true)
+        }
+
+        // Reactivate button after 2s
+        setTimeout(() => setButtonDisabledOverride(false), 2000)
+    }
 
     return (
         <main className="min-h-screen bg-linear-to-t from-yellow-600/60 dark:via-zinc-900 dark:to-zinc-950 flex items-center justify-center px-4">
@@ -29,6 +72,8 @@ export function LoginPage() {
                     </div>
 
                     <div className="flex flex-col gap-4">
+                        {updateMode && (<ErrorBlock title={t('passwordUpdate.title')} message={t('passwordUpdate.message')} />)}
+                        
                         <div>
                             <label
                                 htmlFor="email"
@@ -83,25 +128,68 @@ export function LoginPage() {
                             />
                         </div>
 
+                        {updateMode && (
+                            <>
+                                <div>
+                                    <label
+                                        htmlFor="new-password"
+                                        className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-100"
+                                    >
+                                        {t('labels.newPassword')}
+                                    </label>
+
+                                    <input
+                                        id="new-password"
+                                        type="password"
+                                        autoComplete="new-password"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                        placeholder={t('placeholders.password')}
+                                        className="
+                                            w-full border border-gray-300
+                                            bg-white px-4 py-3 text-sm text-gray-900
+                                            outline-none transition
+                                            placeholder:text-gray-400
+                                            focus:border-yellow-500
+                                            focus:ring-2 focus:ring-yellow-500/20
+                                        "
+                                    />
+                                </div>
+
+                                <div>
+                                    <label
+                                        htmlFor="new-password-confirm"
+                                        className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-100"
+                                    >
+                                        {t('labels.confirmNewPassword')}
+                                    </label>
+
+                                    <input
+                                        id="new-password-confirm"
+                                        type="password"
+                                        autoComplete="new-password"
+                                        value={newPasswordConf}
+                                        onChange={(e) => setNewPasswordConf(e.target.value)}
+                                        placeholder={t('placeholders.password')}
+                                        className="
+                                            w-full border border-gray-300
+                                            bg-white px-4 py-3 text-sm text-gray-900
+                                            outline-none transition
+                                            placeholder:text-gray-400
+                                            focus:border-yellow-500
+                                            focus:ring-2 focus:ring-yellow-500/20
+                                        "
+                                    />
+                                </div>
+                            </>
+                        )}
+
                         <GenericButton
-                            click={() => {}}
+                            click={handleLogin}
+                            disabled={buttonDisabled}
                         >
                             {t('submitButton')}
                         </GenericButton>
-                        {/* <button
-                            onClick={() => {}}
-                            className="
-                                bg-yellow-600 px-4 py-3
-                                text-sm font-semibold text-white
-                                shadow-sm transition
-                                hover:bg-yellow-700
-                                focus:outline-none focus:ring-2
-                                focus:ring-yellow-500 focus:ring-offset-2
-                                active:bg-yellow-800
-                            "
-                        >
-                            {t('submitButton')}
-                        </button> */}
                     </div>
                 </Card>
             </section>

@@ -1,5 +1,5 @@
 CREATE TABLE users (
-    id BIGSERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     email TEXT NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE users (
 
 CREATE TABLE sessions (
     session_id VARCHAR(64) PRIMARY KEY,
-    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     expires_at TIMESTAMP NOT NULL DEFAULT (NOW() + INTERVAL '30 days')
 );

@@ -11,5 +11,13 @@
         "email": "john.doe@example.com",
         "password": "********"
     },
-    "submitButton": "Log in"
+    "submitButton": "Log in",
+    "passwordUpdate": {
+        "title": "Password update",
+        "message": "Please update your password to continue"
+    },
+    "toasts": {
+        "loginSuccessful": "Welcome back, {{name}} !",
+        "logoutSuccessful": "Successfully logged out"
+    }
 }

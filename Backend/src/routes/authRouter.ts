@@ -50,7 +50,7 @@ router.post('/login', async (req, res) => {
         path: '/'
     })
 
-    res.sendStatus(204)
+    res.json(userData)
 })
 
 router.post('/refresh', async (req, res) => {
