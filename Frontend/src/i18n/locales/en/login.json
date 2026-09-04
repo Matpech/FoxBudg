@@ -1,0 +1,15 @@
+{
+    "title": "Log in",
+    "subtitle": "Please enter your FoxBudg credentials to continue",
+    "labels": {
+        "email": "Email",
+        "password": "Password",
+        "newPassword": "New password",
+        "confirmNewPassword": "Confirm new password"
+    },
+    "placeholders": {
+        "email": "john.doe@example.com",
+        "password": "********"
+    },
+    "submitButton": "Log in"
+}

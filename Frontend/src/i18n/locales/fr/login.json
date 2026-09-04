@@ -1,0 +1,15 @@
+{
+    "title": "Connexion",
+    "subtitle": "Veuillez entrer vos identifiants FoxBudg pour continuer",
+    "labels": {
+        "email": "Email",
+        "password": "Mot de passe",
+        "newPassword": "Nouveau mot de passe",
+        "confirmNewPassword": "Confirmer le nouveau mot de passe"
+    },
+    "placeholders": {
+        "email": "john.doe@example.com",
+        "password": "********"
+    },
+    "submitButton": "Se connecter"
+}
