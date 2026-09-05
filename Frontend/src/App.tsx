@@ -13,6 +13,7 @@ function App() {
           <Routes>
             <Route path="/" element={<RootRedirect />} />
             <Route path="/:lang" element={<LangLayout />} >
+              <Route index element={<RootRedirect />} />
               <Route path="login" element={<LoginPage />} />
             </Route>
           </Routes>
