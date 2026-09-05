@@ -1,3 +1,11 @@
 {
-    
+    "header": {
+        "slogan": "Pretend there's a slogan here",
+        "navigation": {
+            "myProfile": "My profile",
+            "reportsPage": "Expense reports",
+            "adminPage": "User management",
+            "logout": "Log out"
+        }
+    }
 }

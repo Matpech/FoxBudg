@@ -5,8 +5,8 @@ interface AuthContextType {
     user: AuthenticatedUser | null
     login: (
         userData: AuthenticatedUser
-    ) => Promise<void>
-    logout: () => Promise<void>
+    ) => void
+    logout: () => void
 }
 
 interface Props {
@@ -28,11 +28,13 @@ export function AuthProvider({ children }: Props) {
         }
     })
 
-    async function login(userData: AuthenticatedUser) {
+    function login(userData: AuthenticatedUser) {
+        setUser(userData)
         localStorage.setItem("foxbudg_user", JSON.stringify(userData))
     }
 
-    async function logout() {
+    function logout() {
+        localStorage.removeItem("foxbudg_user")
         setUser(null)
     }
 

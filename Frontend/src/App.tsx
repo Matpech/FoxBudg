@@ -7,10 +7,11 @@ import { AuthProvider } from "./contexts/AuthContext"
 
 import UR from "./components/routing/UnauthenticatedRoute"
 import AR from "./components/routing/AuthenticatedRoute"
+import AppLayout from "./components/layout/AppLayout"
 
 function App() {
   return (
-    <div className="dark:bg-zinc-950 transition-colors duration-200">
+    <div className="dark:bg-zinc-950 transition-colors duration-200 h-screen">
       <AuthProvider>
         <BrowserRouter>
           <Routes>
@@ -22,7 +23,9 @@ function App() {
               <Route path="login" element={<UR><LoginPage /></UR>} />
 
               {/* Main application routes : authenticated access */}
-              <Route path="dashboard" element={<AR><p>WIP</p></AR>} />
+              <Route element={<AppLayout />} >
+                <Route path="dashboard" element={<AR><p>WIP</p></AR>} />
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>

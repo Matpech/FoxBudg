@@ -1,3 +1,11 @@
 {
-    
+    "header": {
+        "slogan": "Faites comme si il y avait un slogan",
+        "navigation": {
+            "myProfile": "Mon profil",
+            "reportsPage": "Notes de frais",
+            "adminPage": "Gestion utilisateurs",
+            "logout": "Déconnexion"
+        }
+    }
 }
