@@ -6,6 +6,7 @@ export function DashboardPage() {
             {/* TODO: Add message block if an accountant or manager has reports to process */}
 
             {/* Statistics about expense reports of a user */}
+            {/* TODO: Replace hardcoded english labels with localized text */}
             <section className="grid grid-cols-2 gap-4 md:flex md:gap-8 md:justify-center">
                 <StatCard label="Total reports" value={"N/A"} />
                 <StatCard label="Pending reports" value={"N/A"} />
