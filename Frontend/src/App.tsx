@@ -8,6 +8,7 @@ import { AuthProvider } from "./contexts/AuthContext"
 import UR from "./components/routing/UnauthenticatedRoute"
 import AR from "./components/routing/AuthenticatedRoute"
 import AppLayout from "./components/layout/AppLayout"
+import { DashboardPage } from "./pages/DashboardPage"
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
 
               {/* Main application routes : authenticated access */}
               <Route element={<AppLayout />} >
-                <Route path="dashboard" element={<AR><p>WIP</p></AR>} />
+                <Route path="dashboard" element={<AR><DashboardPage /></AR>} />
               </Route>
             </Route>
           </Routes>

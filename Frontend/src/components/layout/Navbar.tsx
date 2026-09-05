@@ -14,7 +14,7 @@ function Navbar() {
 
     return (
         <header className="
-            flex justify-between items-center min-h-20
+            flex justify-between items-center min-h-20 mb-8
             md:border-x-2 border-b-2 p-2 border-yellow-600
             bg-gray-50 dark:bg-zinc-900
             dark:text-white
