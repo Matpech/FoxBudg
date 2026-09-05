@@ -6,7 +6,18 @@ interface Props {
 
 function Card({ children }: Props) {
     return (
-        <div className="bg-white/90 dark:bg-zinc-900 p-8 shadow-xl ring-1 ring-black/5 dark:ring-white/5 backdrop-blur-sm">
+        <div className="
+            p-8
+            bg-white/90 dark:bg-zinc-900
+            border border-yellow-600
+            shadow-xl backdrop-blur-sm
+
+            before:absolute
+            before:top-0 before:left-0
+            before:w-6 before:h-6
+            before:border-t-2 before:border-l-2
+            before:border-yellow-600
+        ">
             {children}
         </div>
     )
