@@ -5,6 +5,9 @@ import { LoginPage } from "./pages/LoginPage"
 import { Toaster } from "react-hot-toast"
 import { AuthProvider } from "./contexts/AuthContext"
 
+import UR from "./components/routing/UnauthenticatedRoute"
+import AR from "./components/routing/AuthenticatedRoute"
+
 function App() {
   return (
     <div className="dark:bg-zinc-950 transition-colors duration-200">
@@ -14,7 +17,12 @@ function App() {
             <Route path="/" element={<RootRedirect />} />
             <Route path="/:lang" element={<LangLayout />} >
               <Route index element={<RootRedirect />} />
-              <Route path="login" element={<LoginPage />} />
+
+              {/* Login page : unauthenticated access */}
+              <Route path="login" element={<UR><LoginPage /></UR>} />
+
+              {/* Main application routes : authenticated access */}
+              <Route path="dashboard" element={<AR><p>WIP</p></AR>} />
             </Route>
           </Routes>
         </BrowserRouter>
