@@ -3,6 +3,7 @@ import validate from "../utils/validator/validator";
 import { loginSchema, sessionIdValue } from "../utils/validator/schemas/authSchemas";
 import { checkLoginCredentials, checkSessionId, generateSessionId, invalidateSessionId, needsToUpdatePassword, signJwt, updateUserPassword } from "../utils/auth";
 import { ApiException, InvalidSessionException, ValidationException } from "../types/errors";
+import { authenticated, unauthenticated } from "../middlewares/authMiddlewares";
 
 interface LoginPayload {
     email: string
@@ -12,7 +13,7 @@ interface LoginPayload {
 
 const router = Router()
 
-router.post('/login', async (req, res) => {
+router.post('/login', unauthenticated, async (req, res) => {
     // Verify email and password against the list of users
     const { email, password, newPassword } = validate<LoginPayload>(req, loginSchema)
     const userData = await checkLoginCredentials({ email, password })
@@ -53,7 +54,7 @@ router.post('/login', async (req, res) => {
     res.json(userData)
 })
 
-router.post('/refresh', async (req, res) => {
+router.post('/refresh', unauthenticated, async (req, res) => {
     const rawSessionId = req.cookies.session
     if (!rawSessionId) throw new ValidationException("No session ID found inside the request")
 
@@ -74,7 +75,7 @@ router.post('/refresh', async (req, res) => {
     res.sendStatus(204)
 })
 
-router.post('/logout', async (req, res) => {
+router.post('/logout', authenticated, async (req, res) => {
     const rawSessionId = req.cookies.session
     if (!rawSessionId) throw new ValidationException("No session ID found inside the request")
 
@@ -83,7 +84,7 @@ router.post('/logout', async (req, res) => {
     const sessionId = validationResult.value
 
     const userData = await checkSessionId(sessionId)
-    if (userData.id !== req.user.id) {
+    if (userData.id !== req.user?.id) {
         throw new ApiException(403, "SESSION_MISMATCH", "This session does not belong to you")
     } else {
         await invalidateSessionId(sessionId)

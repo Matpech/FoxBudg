@@ -1,4 +1,4 @@
-import type { JwtData } from "./users";
+import type { JwtData } from "./security";
 
 export {}
 

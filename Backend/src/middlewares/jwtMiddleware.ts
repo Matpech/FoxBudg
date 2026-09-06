@@ -1,5 +1,5 @@
 import type { Request, NextFunction, Response } from "express";
-import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import { InvalidTokenException } from "../types/errors";
 import type { JwtData } from "../types/security";
 
