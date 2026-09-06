@@ -1,4 +1,4 @@
-import { DatabaseException } from "../types/errors";
+import { ApiException, DatabaseException, NotFoundException } from "../types/errors";
 import type { ExpenseReport, ExpenseReportAttachment, ExpenseReportCreateParams } from "../types/expenseReports";
 import type { JwtData } from "../types/security";
 import { pool } from "../utils/db";
@@ -11,6 +11,7 @@ import fs from "fs"
  * This function can create a report with data such as:
  * - The title of the expense
  * - An optional description
+ * - An amount
  * - A list of documents uploaded through Multer
  * 
  * User info is also passed to build the return value.
@@ -18,8 +19,9 @@ import fs from "fs"
  * @param reportDetails Information about the expense report itself
  * @param userInfo Information about the creator of the expense report
  * @returns a populated ExpenseReport
+ * @throws DatabaseException
  */
-export async function createExpenseReport(reportDetails: ExpenseReportCreateParams, userInfo: JwtData) {
+export async function createExpenseReport(reportDetails: ExpenseReportCreateParams, userInfo: JwtData): Promise<ExpenseReport> {
     const client = await pool.connect()
     
     try {
@@ -89,5 +91,126 @@ export async function createExpenseReport(reportDetails: ExpenseReportCreatePara
         throw new DatabaseException(error as Error)
     } finally {
         client.release()
+    }
+}
+
+/**
+ * Fetch reports for a specific user
+ * 
+ * @param userId The ID of the user to filter reports
+ * @returns an array of reports created by the user
+ * @throws DatabaseException
+ */
+export async function getReportsFromUser(userId: number): Promise<ExpenseReport[]> {
+    try {
+        const result = await pool.query<ExpenseReport>(
+            `
+                SELECT
+                    er.id,
+                    er.title,
+                    er.description,
+                    er.amount,
+                    er.status,
+                    er.submitted_at,
+                    er.comment,
+
+                    CASE
+                        WHEN u.id IS NOT NULL THEN
+                            json_build_object(
+                                'id', u.id,
+                                'first_name', u.first_name,
+                                'last_name', u.last_name,
+                                'email', u.email
+                            )
+                        ELSE NULL
+                    END AS "user",
+
+                    COALESCE(
+                        json_agg(
+                            json_build_object(
+                                'id', dm.id,
+                                'name', dm.original_name
+                            )
+                        ) FILTER (WHERE dm.id IS NOT NULL),
+                        '[]'::json
+                    ) AS files
+
+                FROM expense_reports er
+                LEFT JOIN users u ON u.id = er.user_id
+                LEFT JOIN document_metadata dm ON dm.report_id = er.id
+
+                WHERE er.user_id = $1
+
+                GROUP BY er.id, u.id
+                ORDER BY er.submitted_at DESC;
+            `, [userId]
+        )
+
+        return result.rows
+    } catch (error) {
+        throw new DatabaseException(error as Error)
+    }
+}
+
+/**
+ * Fetch a single report by ID
+ * 
+ * @param reportId The ID of the report to fetch
+ * @returns the requested expense report
+ * @throws NotFoundException or DatabaseException
+ */
+export async function getOneReport(reportId: number) {
+    try {
+        const result = await pool.query<ExpenseReport>(
+            `
+                SELECT
+                    er.id,
+                    er.title,
+                    er.description,
+                    er.amount,
+                    er.status,
+                    er.submitted_at,
+                    er.comment,
+
+                    CASE
+                        WHEN u.id IS NOT NULL THEN
+                            json_build_object(
+                                'id', u.id,
+                                'first_name', u.first_name,
+                                'last_name', u.last_name,
+                                'email', u.email
+                            )
+                        ELSE NULL
+                    END AS "user",
+
+                    COALESCE(
+                        json_agg(
+                            json_build_object(
+                                'id', dm.id,
+                                'name', dm.original_name
+                            )
+                        ) FILTER (WHERE dm.id IS NOT NULL),
+                        '[]'::json
+                    ) AS files
+
+                FROM expense_reports er
+                LEFT JOIN users u ON u.id = er.user_id
+                LEFT JOIN document_metadata dm ON dm.report_id = er.id
+
+                WHERE er.id = $1
+
+                GROUP BY er.id, u.id
+                ORDER BY er.submitted_at DESC;
+            `, [reportId]
+        )
+
+        if (!result.rows[0]) {
+            throw new NotFoundException("Expense report")
+        }
+
+        return result.rows[0]
+    } catch (error) {
+        if (error instanceof ApiException) throw error
+        throw new DatabaseException(error as Error)
     }
 }

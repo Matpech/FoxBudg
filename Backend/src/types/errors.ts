@@ -48,6 +48,12 @@ export class ValidationException extends ApiException {
     }
 }
 
+export class InvalidIdException extends ApiException {
+    constructor() {
+        super(400, "INVALID_NUMERIC_ID", "The specified ID is not a valid numeric ID")
+    }
+}
+
 /**
  * Custom ApiException type related to JWT errors (invalid JWT, invalid signature, expired JWT)
  * 
