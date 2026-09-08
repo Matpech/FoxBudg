@@ -5,3 +5,10 @@ export const reportUploadSchema = Joi.object({
     description: Joi.string().max(300),
     amount: Joi.number().min(0).required()
 })
+
+export const reportStatusSchema = Joi.string().valid('pending', 'approved', 'denied', 'processed')
+
+export const reportSearchParamsSchema = Joi.object({
+    page: Joi.number().min(1).default(1),
+    status: Joi.array().items(reportStatusSchema)
+})

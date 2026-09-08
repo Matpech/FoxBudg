@@ -7,12 +7,14 @@ import { ValidationException } from "../../types/errors"
  * 
  * @param req The Express Request object, used to inspect the request body
  * @param schema The Joi schema to use for validation
+ * @param bodyOptional Set to true to allow empty request bodies
  * @returns The validated data
  * @throws ValidationException
  */
 export default function validate<T>(
     req: Request,
-    schema: Schema
+    schema: Schema,
+    bodyOptional = false
 ): T {
     const body = req.body
     const result = schema.validate(body)
@@ -22,7 +24,8 @@ export default function validate<T>(
     }
 
     if (!result.value) {
-        throw new ValidationException("No data")
+        if (!bodyOptional) throw new ValidationException("No data")
+        return undefined as T
     }
 
     return result.value

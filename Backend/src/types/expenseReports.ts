@@ -28,3 +28,8 @@ export interface ExpenseReportCreateParams {
     amount: number
     files: Express.Multer.File[]
 }
+
+export interface ExpenseReportSearchParams {
+    status?: ExpenseReportStatus[]
+    page: number
+}

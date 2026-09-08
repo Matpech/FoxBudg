@@ -1,5 +1,5 @@
 import { ApiException, DatabaseException, NotFoundException } from "../types/errors";
-import type { ExpenseReport, ExpenseReportAttachment, ExpenseReportCreateParams } from "../types/expenseReports";
+import type { ExpenseReport, ExpenseReportAttachment, ExpenseReportCreateParams, ExpenseReportSearchParams } from "../types/expenseReports";
 import type { JwtData } from "../types/security";
 import { pool } from "../utils/db";
 import crypto from "crypto"
@@ -211,6 +211,96 @@ export async function getOneReport(reportId: number) {
         return result.rows[0]
     } catch (error) {
         if (error instanceof ApiException) throw error
+        throw new DatabaseException(error as Error)
+    }
+}
+
+/**
+ * Search all expense reports and return the ones that match specified parameters.
+ * 
+ * This function returns a paginated list of results (20 results per page).
+ * 
+ * @param params An object containing all parameters used for search (optional)
+ * @returns The paginated results, along with the total results count and a boolean flag to tell if page + 1 exists
+ * @throws DatabaseException
+ */
+export async function searchReports(params?: ExpenseReportSearchParams) {
+    const fields = []
+    const values: any[] = []
+    let index = 1
+
+    const resultsPerPage = 20
+    const offset = ((params?.page ?? 1) - 1) * resultsPerPage
+
+    // Build query dynamically
+    if (params && params.status) {
+        fields.push(`er.status = ANY($${index++})`)
+        values.push(params.status)
+    }
+
+    const query = `
+        SELECT
+            er.id,
+            er.title,
+            er.description,
+            er.amount,
+            er.status,
+            er.submitted_at,
+            er.comment,
+
+            CASE
+                WHEN u.id IS NOT NULL THEN
+                    json_build_object(
+                        'id', u.id,
+                        'first_name', u.first_name,
+                        'last_name', u.last_name,
+                        'email', u.email
+                    )
+                ELSE NULL
+            END AS "user",
+
+            COALESCE(
+                json_agg(
+                    json_build_object(
+                        'id', dm.id,
+                        'name', dm.original_name
+                    )
+                ) FILTER (WHERE dm.id IS NOT NULL),
+                '[]'::json
+            ) AS files
+
+        FROM expense_reports er
+        LEFT JOIN users u ON u.id = er.user_id
+        LEFT JOIN document_metadata dm ON dm.report_id = er.id
+
+        ${fields.length > 0 ? 'WHERE' : ''} ${fields.join(' AND ')}
+
+        GROUP BY er.id, u.id
+        ORDER BY er.submitted_at DESC
+
+        OFFSET $${index++}
+        LIMIT $${index++}
+    `
+    
+    // Execute the query
+    try {
+        const countResult = await pool.query(
+            `
+            SELECT COUNT(*)::int
+            FROM expense_reports er
+            ${fields.length > 0 ? 'WHERE' : ''} ${fields.join(' AND ')}
+            `, values
+        )
+        
+        values.push(offset, resultsPerPage + 1)
+        const result = await pool.query(query, values)
+
+        return {
+            total: countResult.rows[0].count,
+            results: result.rows.slice(0, resultsPerPage),
+            next: (result.rowCount === resultsPerPage + 1)
+        }
+    } catch (error) {
         throw new DatabaseException(error as Error)
     }
 }

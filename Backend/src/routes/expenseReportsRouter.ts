@@ -1,13 +1,14 @@
 import { Router } from "express";
 import { upload, validateReportDocuments } from "../utils/uploads";
 import { authenticated } from "../middlewares/authMiddlewares";
-import { ApiException, InvalidIdException, InvalidTokenException, ValidationException } from "../types/errors";
-import { createExpenseReport, getOneReport, getReportsFromUser } from "../repositories/expenseReportsRepo";
+import { ApiException, InvalidIdException, InvalidTokenException, NotImplementedException } from "../types/errors";
+import { createExpenseReport, getOneReport, getReportsFromUser, searchReports } from "../repositories/expenseReportsRepo";
 import validate from "../utils/validator/validator";
-import { reportUploadSchema } from "../utils/validator/schemas/reportSchemas";
+import { reportSearchParamsSchema, reportUploadSchema } from "../utils/validator/schemas/reportSchemas";
 import fs from "fs"
 import { numericIdSchema } from "../utils/validator/schemas/generalSchemas";
 import { getOneUser } from "../repositories/usersRepo";
+import type { ExpenseReportSearchParams } from "../types/expenseReports";
 
 const router = Router()
 
@@ -88,6 +89,20 @@ router.get('/-/:report_id', authenticated, async (req, res) => {
     if (account.role === "manager") return res.json(report)
 
     throw new ApiException(403, "ACCESS_DENIED", "You are not allowed to read this expense report")
+})
+
+router.post('/-/', authenticated, async (req, res) => {
+    if (!req.user) {
+        throw new InvalidTokenException()
+    }
+
+    // Parse parameters
+    const params = validate<ExpenseReportSearchParams | undefined>(req, reportSearchParamsSchema, true)
+
+    // Make the search
+    const results = await searchReports(params)
+
+    return res.json(results)
 })
 
 export default router
