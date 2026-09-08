@@ -159,7 +159,7 @@ export async function getReportsFromUser(userId: number): Promise<ExpenseReport[
  * @returns the requested expense report
  * @throws NotFoundException or DatabaseException
  */
-export async function getOneReport(reportId: number) {
+export async function getOneReport(reportId: number): Promise<ExpenseReport> {
     try {
         const result = await pool.query<ExpenseReport>(
             `
@@ -215,6 +215,12 @@ export async function getOneReport(reportId: number) {
     }
 }
 
+interface SearchOutput {
+    total: number
+    results: ExpenseReport[]
+    next: boolean
+}
+
 /**
  * Search all expense reports and return the ones that match specified parameters.
  * 
@@ -224,7 +230,7 @@ export async function getOneReport(reportId: number) {
  * @returns The paginated results, along with the total results count and a boolean flag to tell if page + 1 exists
  * @throws DatabaseException
  */
-export async function searchReports(params?: ExpenseReportSearchParams) {
+export async function searchReports(params?: ExpenseReportSearchParams): Promise<SearchOutput> {
     const fields = []
     const values: any[] = []
     let index = 1
@@ -313,7 +319,7 @@ export async function searchReports(params?: ExpenseReportSearchParams) {
  * @param comment A comment that can be added by a manager when approving or denying a report
  * @throws NotFoundException or DatabaseException
  */
-export async function processReport(reportId: number, newStatus: 'approved' | 'denied' | 'processed', comment?: string) {
+export async function processReport(reportId: number, newStatus: 'approved' | 'denied' | 'processed', comment?: string): Promise<void> {
     try {
         const result = await pool.query(
             `UPDATE expense_reports SET status = $2 ${comment ? ', comment = $3' : ''} WHERE id = $1`,

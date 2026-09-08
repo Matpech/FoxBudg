@@ -2,6 +2,13 @@ import { ApiException, DatabaseException, NotFoundException } from "../types/err
 import type { User } from "../types/users";
 import { pool } from "../utils/db";
 
+/**
+ * Fetch a single user by ID from the database.
+ * 
+ * @param userId The ID of the user to fetch
+ * @returns The user data associated to the user ID
+ * @throws NotFoundException or DatabaseException
+ */
 export async function getOneUser(userId: number): Promise<User> {
     try {
         const result = await pool.query<User>(
