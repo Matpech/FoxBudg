@@ -43,6 +43,25 @@ export async function generateSessionId(userId: number): Promise<string> {
 }
 
 /**
+ * Generate a random 12 characters password for new accounts.
+ * 
+ * These passwords are designed to be used once and changed on first login.
+ * 
+ * @returns A 12 character randomly generated password
+ */
+export function generateRandomPassword(): string {
+    const DEFAULT_PASSWORD_LENGTH = 12
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    let password = ''
+
+    for (let i = 0; i < DEFAULT_PASSWORD_LENGTH; i++) {
+        password += characters[crypto.randomInt(characters.length)]
+    }
+
+    return password
+}
+
+/**
  * Check if an email/password is valid.
  * 
  * @param credentials The login credentials to verify

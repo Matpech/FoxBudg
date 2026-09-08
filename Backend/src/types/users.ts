@@ -13,3 +13,13 @@ export interface User {
     last_name: string
     role: UserRole
 }
+
+/**
+ * Information used to create a new account in the user management panel
+ */
+export interface UserCreateParams {
+    email: string
+    first_name: string
+    last_name: string
+    role: UserRole
+}
