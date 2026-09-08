@@ -304,3 +304,27 @@ export async function searchReports(params?: ExpenseReportSearchParams) {
         throw new DatabaseException(error as Error)
     }
 }
+
+/**
+ * Change the status of an expense report and add a comment if specified.
+ * 
+ * @param reportId The ID of the expense report to update
+ * @param newStatus The new status to assign to the expense report
+ * @param comment A comment that can be added by a manager when approving or denying a report
+ * @throws NotFoundException or DatabaseException
+ */
+export async function processReport(reportId: number, newStatus: 'approved' | 'denied' | 'processed', comment?: string) {
+    try {
+        const result = await pool.query(
+            `UPDATE expense_reports SET status = $2 ${comment ? ', comment = $3' : ''} WHERE id = $1`,
+            comment ? [reportId, newStatus, comment] : [reportId, newStatus]
+        )
+
+        if (result.rowCount === 0) {
+            throw new NotFoundException("Expense report")
+        }
+    } catch (error) {
+        if (error instanceof ApiException) throw error
+        throw new DatabaseException(error as Error)
+    }
+}

@@ -2,9 +2,9 @@ import { Router } from "express";
 import { upload, validateReportDocuments } from "../utils/uploads";
 import { authenticated } from "../middlewares/authMiddlewares";
 import { ApiException, InvalidIdException, InvalidTokenException, NotImplementedException } from "../types/errors";
-import { createExpenseReport, getOneReport, getReportsFromUser, searchReports } from "../repositories/expenseReportsRepo";
+import { createExpenseReport, getOneReport, getReportsFromUser, processReport, searchReports } from "../repositories/expenseReportsRepo";
 import validate from "../utils/validator/validator";
-import { reportSearchParamsSchema, reportUploadSchema } from "../utils/validator/schemas/reportSchemas";
+import { reportProcessingManagerSchema, reportSearchParamsSchema, reportUploadSchema } from "../utils/validator/schemas/reportSchemas";
 import fs from "fs"
 import { numericIdSchema } from "../utils/validator/schemas/generalSchemas";
 import { getOneUser } from "../repositories/usersRepo";
@@ -89,6 +89,47 @@ router.get('/-/:report_id', authenticated, async (req, res) => {
     if (account.role === "manager") return res.json(report)
 
     throw new ApiException(403, "ACCESS_DENIED", "You are not allowed to read this expense report")
+})
+
+router.patch('/-/:report_id', authenticated, async (req, res) => {
+    if (!req.user) {
+        throw new InvalidTokenException()
+    }
+
+    // Validate expense report ID
+    const validationResult = numericIdSchema.validate(parseInt(req.params.report_id as string))
+    const reportId = validationResult.value
+    if (!reportId) {
+        throw new InvalidIdException()
+    }
+
+    // Verify account permissions
+    const account = await getOneUser(req.user.id)
+    if (account.role === 'employee') {
+        throw new ApiException(403, "ACCESS_DENIED", "You are not allowed to perform this action")
+    }
+
+    // Fetch the report for further verifications
+    const report = await getOneReport(reportId)
+
+    if (account.role === "manager") {
+        // Managers have the choice to accept or deny reports that are pending, with an optional comment
+        if (report.status !== 'pending') {
+            throw new ApiException(409, "REPORT_NOT_PENDING", "You can only process pending expense reports")
+        }
+
+        const { newStatus, comment } = validate<{ newStatus: 'approved' | 'denied', comment?: string }>(req, reportProcessingManagerSchema)
+        await processReport(reportId, newStatus, comment)
+        return res.sendStatus(204)
+    } else {
+        // Accountants only have the option to mark a report as processed (no body required)
+        if (report.status !== 'approved') {
+            throw new ApiException(409, "REPORT_NOT_APPROVED", "You can only process approved expense reports")
+        }
+
+        await processReport(reportId, "processed")
+        return res.sendStatus(204)
+    }
 })
 
 router.post('/-/search', authenticated, async (req, res) => {
