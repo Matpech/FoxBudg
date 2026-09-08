@@ -91,7 +91,7 @@ router.get('/-/:report_id', authenticated, async (req, res) => {
     throw new ApiException(403, "ACCESS_DENIED", "You are not allowed to read this expense report")
 })
 
-router.post('/-/', authenticated, async (req, res) => {
+router.post('/-/search', authenticated, async (req, res) => {
     if (!req.user) {
         throw new InvalidTokenException()
     }
