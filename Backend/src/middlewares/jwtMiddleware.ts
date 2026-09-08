@@ -13,7 +13,7 @@ import type { JwtData } from "../types/security";
  */
 export const jwtMiddleware = (
     req: Request,
-    _res: Response,
+    res: Response,
     next: NextFunction
 ) => {
     // Extract and verify the JWT
@@ -29,6 +29,9 @@ export const jwtMiddleware = (
             req.user = decoded as JwtData
             return next()
         } catch (error) {
+            // Delete the JWT cookie if it is invalid
+            // Not deleting the cookie will result in a refresh request failing due to the jwtMiddleware stopping it with the InvalidTokenException
+            res.clearCookie("jwt")
             throw new InvalidTokenException()
         }
     } else {
