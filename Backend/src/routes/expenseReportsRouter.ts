@@ -97,7 +97,30 @@ router.post('/-/', authenticated, async (req, res) => {
     }
 
     // Parse parameters
-    const params = validate<ExpenseReportSearchParams | undefined>(req, reportSearchParamsSchema, true)
+    let params = validate<ExpenseReportSearchParams | undefined>(req, reportSearchParamsSchema, true)
+
+    // Enforce access control rules
+    // - Accountants can only access reports that are either 'approved' or 'processed'
+    // - Managers can access reports of any status (no additional verification)
+    // - Employees cannot use the endpoint
+    
+    const account = await getOneUser(req.user.id)
+    if (account.role === 'employee') {
+        // TODO: allow employees to use this endpoint to access their own reports of any status
+        throw new ApiException(403, "ACCESS_DENIED", "You cannot use this search endpoint as an employee")
+    }
+
+    if (account.role === 'accountant') {
+        // Set the allowed types in the filters
+        if (!params || !params.status) {
+            params = { page: 1, status: ['approved', 'processed'] }
+        }
+
+        // Reject request with a 403 errors if forbidden statuses are specified
+        if (params.status && (params.status.includes('pending') || params.status.includes('denied'))) {
+            throw new ApiException(403, "FORBIDDEN_FILTERS", "You are not allowed to use these filters")
+        }
+    }
 
     // Make the search
     const results = await searchReports(params)
