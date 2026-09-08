@@ -1,10 +1,23 @@
+/**
+ * All valid statuses for expense reports :
+ * - pending (the report has been submitted by an employee and is awaiting approval by a manager)
+ * - approved (the report has been approved by a manager and is now waiting to be marked as processed by an accountant)
+ * - denied (the report has been permanently closed by a manager)
+ * - processed (the report has been marked as processed by an accountant)
+ */
 export type ExpenseReportStatus = 'pending' | 'approved' | 'denied' | 'processed'
 
+/**
+ * Information about an attachment. The ID can be used to download the attachment from the API.
+ */
 export interface ExpenseReportAttachment {
     id: string
     name: string
 }
 
+/**
+ * Full information about an expense report saved in the database.
+ */
 export interface ExpenseReport {
     id: number
     user?: {
@@ -22,6 +35,9 @@ export interface ExpenseReport {
     comment?: string
 }
 
+/**
+ * Parameters required to submit a new expense report to the database.
+ */
 export interface ExpenseReportCreateParams {
     title: string
     description?: string
@@ -29,6 +45,9 @@ export interface ExpenseReportCreateParams {
     files: Express.Multer.File[]
 }
 
+/**
+ * Search parameters used to narrow down results and for pagination.
+ */
 export interface ExpenseReportSearchParams {
     status?: ExpenseReportStatus[]
     page: number
