@@ -171,3 +171,75 @@ export async function deleteUser(userId: number): Promise<void> {
         throw new DatabaseException(error as Error)
     }
 }
+
+interface UserReportStats {
+    total: number
+    pending: number
+    approved: number
+    denied: number
+    processed: number
+    total_approved_amount: number
+}
+
+/**
+ * Get expense report statistics from a specific user. These statistics include :
+ * - The total number of expense reports submitted by the user
+ * - The number of reports by status (pending, approved, denied, processed)
+ * - The total amount of all expenses approved by management
+ * 
+ * @param userId The ID of the user
+ * @returns An object with all expense report stats
+ * @throws NotFoundException or DatabaseException
+ */
+export async function getUserReportStats(userId: number): Promise<UserReportStats> {
+    try {
+        const result = await pool.query<UserReportStats>(
+            `
+                SELECT
+                    (
+                        SELECT COUNT(*)
+                        FROM expense_reports
+                        WHERE user_id = $1
+                    )::integer AS total,
+                    (
+                        SELECT COUNT(*)
+                        FROM expense_reports
+                        WHERE user_id = $1
+                        AND status = 'pending'
+                    )::integer AS pending,
+                    (
+                        SELECT COUNT(*)
+                        FROM expense_reports
+                        WHERE user_id = $1
+                        AND status = 'approved'
+                    )::integer AS approved,
+                    (
+                        SELECT COUNT(*)
+                        FROM expense_reports
+                        WHERE user_id = $1
+                        AND status = 'denied'
+                    )::integer AS denied,
+                    (
+                        SELECT COUNT(*)
+                        FROM expense_reports
+                        WHERE user_id = $1
+                        AND status = 'processed'
+                    )::integer AS processed,
+                    (
+                        SELECT COALESCE(SUM(amount), 0)
+                        FROM expense_reports
+                        WHERE user_id = $1
+                        AND status IN ('approved', 'processed')
+                    ) AS total_approved_amount
+                FROM users
+                WHERE id = $1
+            `, [userId]
+        )
+
+        if (!result.rows[0]) throw new NotFoundException("User")
+        return result.rows[0]
+    } catch (error) {
+        if (error instanceof ApiException) throw error
+        throw new DatabaseException(error as Error)
+    }
+}

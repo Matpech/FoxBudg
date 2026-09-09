@@ -4,7 +4,7 @@ import { ApiException, InvalidIdException, InvalidTokenException } from "../type
 import validate from "../utils/validator/validator";
 import { userCreateSchema, userUpdateSchema } from "../utils/validator/schemas/userSchemas";
 import type { UserCreateParams, UserUpdateParams } from "../types/users";
-import { createUserAccount, deleteUser, getOneUser, getUsers, updateUser } from "../repositories/usersRepo";
+import { createUserAccount, deleteUser, getOneUser, getUserReportStats, getUsers, updateUser } from "../repositories/usersRepo";
 import { numericIdSchema } from "../utils/validator/schemas/generalSchemas";
 
 const router = Router()
@@ -82,6 +82,17 @@ router.delete('/:user_id', roleRequired('manager'), async (req, res) => {
 
     await deleteUser(userId)
     return res.sendStatus(204)
+})
+
+router.get('/:user_id/stats', authenticated, async (req, res) => {
+    const validationResult = numericIdSchema.validate(parseInt(req.params.user_id as string))
+    const userId = validationResult.value
+    if (!userId) {
+        throw new InvalidIdException()
+    }
+
+    const stats = await getUserReportStats(userId)
+    return res.json(stats)
 })
 
 export default router
