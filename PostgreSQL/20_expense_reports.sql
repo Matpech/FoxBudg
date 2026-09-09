@@ -3,7 +3,7 @@ CREATE TABLE expense_reports (
     user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
     title TEXT NOT NULL,
     description TEXT,
-    amount DOUBLE PRECISION NOT NULL CHECK (amount > 0),
+    amount DOUBLE PRECISION NOT NULL CHECK (amount >= 0),
     status report_status NOT NULL DEFAULT 'pending',
     submitted_at TIMESTAMP NOT NULL DEFAULT NOW(),
     comment TEXT

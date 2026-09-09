@@ -7,6 +7,7 @@ import { jwtMiddleware } from "./src/middlewares/jwtMiddleware"
 
 import authRouter from "./src/routes/authRouter"
 import reportRouter from "./src/routes/expenseReportsRouter"
+import userRouter from "./src/routes/usersRouter"
 
 const API_PORT = 4000
 const app = Express()
@@ -37,6 +38,7 @@ app.get('/healthcheck', async (req, res) => {
 // Sub routers
 app.use("/auth", authRouter)
 app.use("/reports", reportRouter)
+app.use("/users", userRouter)
 
 // Handle errors
 app.use(errorHandler)
