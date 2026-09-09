@@ -1,0 +1,13 @@
+{
+    "statistics": {
+        "pending": "Pending reports",
+        "approved": "Approved reports",
+        "processed": "Processed reports",
+        "totalAmount": "Approved amount"
+    },
+    "toasts": {
+        "errors": {
+            "authctxNoUser": "Cannot find your user ID. Please try to log out and log back in."
+        }
+    }
+}

@@ -7,3 +7,12 @@ export interface AuthenticatedUser {
     last_name: string
     role: UserRole
 }
+
+export interface UserStats {
+    total: number
+    pending: number
+    approved: number
+    denied: number
+    processed: number
+    total_approved_amount: number
+}

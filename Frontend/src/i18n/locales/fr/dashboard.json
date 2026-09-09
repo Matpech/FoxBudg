@@ -1,0 +1,13 @@
+{
+    "statistics": {
+        "pending": "Notes en attente",
+        "approved": "Notes approuvées",
+        "processed": "Notes traitées",
+        "totalAmount": "Montant total approuvé"
+    },
+    "toasts": {
+        "errors": {
+            "authctxNoUser": "ID utilisateur introuvable. Veuillez vous déconnecter et vous reconnecter."
+        }
+    }
+}
