@@ -48,9 +48,19 @@ export class ValidationException extends ApiException {
     }
 }
 
+/**
+ * Custom ApiException type related to invalid ID values. This custom exception can be used for numeric IDs (default) and UUIDs.
+ * 
+ * @param idVariant The exception variant. Can be 'numeric' or 'uuid'.
+ * @returns HTTP 400 `INVALID_NUMERIC_ID` or `INVALID_UUID`
+ */
 export class InvalidIdException extends ApiException {
-    constructor() {
-        super(400, "INVALID_NUMERIC_ID", "The specified ID is not a valid numeric ID")
+    constructor(idVariant: 'numeric' | 'uuid' = 'numeric') {
+        if (idVariant === 'numeric') {
+            super(400, "INVALID_NUMERIC_ID", "The specified ID is not a valid numeric ID")
+        } else {
+            super(400, "INVALID_UUID", "The specified ID is not a valid UUID")
+        }
     }
 }
 

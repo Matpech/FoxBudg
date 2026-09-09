@@ -2,11 +2,11 @@ import { Router } from "express";
 import { upload, validateReportDocuments } from "../utils/uploads";
 import { authenticated } from "../middlewares/authMiddlewares";
 import { ApiException, InvalidIdException, InvalidTokenException, NotImplementedException } from "../types/errors";
-import { createExpenseReport, getOneReport, getReportsFromUser, processReport, searchReports } from "../repositories/expenseReportsRepo";
+import { createExpenseReport, getOneReport, getReportAttachment, getReportsFromUser, processReport, searchReports } from "../repositories/expenseReportsRepo";
 import validate from "../utils/validator/validator";
 import { reportProcessingManagerSchema, reportSearchParamsSchema, reportUploadSchema } from "../utils/validator/schemas/reportSchemas";
 import fs from "fs"
-import { numericIdSchema } from "../utils/validator/schemas/generalSchemas";
+import { numericIdSchema, uuidSchema } from "../utils/validator/schemas/generalSchemas";
 import { getOneUser } from "../repositories/usersRepo";
 import type { ExpenseReportSearchParams } from "../types/expenseReports";
 
@@ -167,6 +167,52 @@ router.post('/-/search', authenticated, async (req, res) => {
     const results = await searchReports(params)
 
     return res.json(results)
+})
+
+router.get('/-/:report_id/document/:document_id', authenticated, async (req, res) => {
+    if (!req.user) {
+        throw new InvalidTokenException()
+    }
+    
+    // Parse and verify IDs
+    const { report_id, document_id } = req.params as { report_id: string, document_id: string }
+    const reportIdValidation = numericIdSchema.validate(parseInt(report_id))
+    const reportId = reportIdValidation.value
+    if (!reportId) {
+        throw new InvalidIdException()
+    }
+    const documentIdValidation = uuidSchema.validate(document_id)
+    const documentId = documentIdValidation.value
+    if (!documentId) {
+        throw new InvalidIdException('uuid')
+    }
+
+    // Verify access permissions with report and account details
+    let allowed = false
+    const report = await getOneReport(reportId)
+    
+    if (req.user.id === report.user?.id) allowed = true
+    
+    const account = await getOneUser(req.user.id)
+
+    if (
+        account.role === "accountant" &&
+        (report.status === "approved" || report.status === "processed")
+    ) allowed = true
+
+    if (account.role === "manager") allowed = true
+
+    if (!allowed) {
+        throw new ApiException(403, "ACCESS_DENIED", "You are not allowed to access documents from this expense report")
+    }
+
+    // Read the document and send it to the client as a file download
+    const attachment = await getReportAttachment(reportId, documentId)
+
+    return res
+        .type('application/pdf')
+        .attachment(attachment.filename)
+        .send(attachment.data)
 })
 
 export default router

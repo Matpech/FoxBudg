@@ -1,5 +1,5 @@
 import { ApiException, DatabaseException, NotFoundException } from "../types/errors";
-import type { ExpenseReport, ExpenseReportAttachment, ExpenseReportCreateParams, ExpenseReportSearchParams } from "../types/expenseReports";
+import type { AttachmentFile, ExpenseReport, ExpenseReportAttachment, ExpenseReportCreateParams, ExpenseReportSearchParams } from "../types/expenseReports";
 import type { JwtData } from "../types/security";
 import { pool } from "../utils/db";
 import crypto from "crypto"
@@ -328,6 +328,36 @@ export async function processReport(reportId: number, newStatus: 'approved' | 'd
 
         if (result.rowCount === 0) {
             throw new NotFoundException("Expense report")
+        }
+    } catch (error) {
+        if (error instanceof ApiException) throw error
+        throw new DatabaseException(error as Error)
+    }
+}
+
+/**
+ * Get the data and original file name from a specific document.
+ * 
+ * @param reportId The ID of the expense report tied to the document
+ * @param documentId The UUID of the document to read
+ * @returns An object containing a data Buffer and the file name (given during upload)
+ * @throws NotFoundException or DatabaseException
+ */
+export async function getReportAttachment(reportId: number, documentId: string): Promise<AttachmentFile> {
+    try {
+        // Check the reportId/documentId pair and get the original file name
+        const result = await pool.query(
+            "SELECT original_name FROM document_metadata WHERE report_id = $1 AND id = $2",
+            [reportId, documentId]
+        )
+
+        if (!result.rows[0]) throw new NotFoundException("Document")
+
+        // Read the file from the data volume and return the AttachmentFile object
+        const data = fs.readFileSync(`/data/${documentId}`)
+        return {
+            data,
+            filename: result.rows[0].original_name
         }
     } catch (error) {
         if (error instanceof ApiException) throw error

@@ -16,6 +16,14 @@ export interface ExpenseReportAttachment {
 }
 
 /**
+ * Attachment data for download operations, containing the PDF data and original file name.
+ */
+export interface AttachmentFile {
+    data: Buffer
+    filename: string
+}
+
+/**
  * Full information about an expense report saved in the database.
  */
 export interface ExpenseReport {
