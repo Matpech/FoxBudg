@@ -23,3 +23,12 @@ export interface UserCreateParams {
     last_name: string
     role: UserRole
 }
+
+/**
+ * Information about a user that can be updated by a manager
+ */
+export interface UserUpdateParams {
+    first_name?: string
+    last_name?: string
+    role?: UserRole
+}
