@@ -18,7 +18,7 @@
         },
         "body": {
             "accountant": "{{x}} notes de frais sont en attente de traitement",
-            "manager": "{{x}} notes de frais sont en attente et attendent votre approbation"
+            "manager": "{{x}} notes de frais attendent votre approbation"
         }
     }
 }

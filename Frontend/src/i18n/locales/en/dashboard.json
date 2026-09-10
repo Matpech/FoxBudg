@@ -18,7 +18,7 @@
         },
         "body": {
             "accountant": "{{x}} expense reports are waiting to be processed",
-            "manager": "{{x}} expense reports are currently pending and waiting for your approval"
+            "manager": "{{x}} expense reports are currently waiting for your approval"
         }
     }
 }
