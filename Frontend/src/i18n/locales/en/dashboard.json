@@ -10,5 +10,15 @@
             "authctxNoUser": "Cannot find your user ID. Please try to log out and log back in.",
             "selfReportsFetchFailed": "Failed to fetch your expense reports"
         }
+    },
+    "notification": {
+        "title": {
+            "accountant": "Reports awaiting processing",
+            "manager": "Reports awaiting approval"
+        },
+        "body": {
+            "accountant": "{{x}} expense reports are waiting to be processed",
+            "manager": "{{x}} expense reports are currently pending and waiting for your approval"
+        }
     }
 }

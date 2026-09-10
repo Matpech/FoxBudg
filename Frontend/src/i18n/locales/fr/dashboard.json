@@ -10,5 +10,15 @@
             "authctxNoUser": "ID utilisateur introuvable. Veuillez vous déconnecter et vous reconnecter.",
             "selfReportsFetchFailed": "Impossible de récupérer vos notes de frais"
         }
+    },
+    "notification": {
+        "title": {
+            "accountant": "Notes en attente de traitement",
+            "manager": "Notes en attente d'approbation"
+        },
+        "body": {
+            "accountant": "{{x}} notes de frais sont en attente de traitement",
+            "manager": "{{x}} notes de frais sont en attente et attendent votre approbation"
+        }
     }
 }

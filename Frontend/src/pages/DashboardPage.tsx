@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { useApiClient } from "../hooks/useApiClient";
 import { useSelfReports } from "../hooks/useSelfReports";
 import ReportsTable from "../components/ReportsTable";
+import DashboardNotificationBlock from "../components/DashboardNotificationBlock";
 
 export function DashboardPage() {
     const { t } = useTranslation('dashboard')
@@ -37,10 +38,11 @@ export function DashboardPage() {
 
     return (
         <main>
-            {/* TODO: Add message block if an accountant or manager has reports to process */}
+            {/* Message block if an accountant or manager has reports to process */}
+            <DashboardNotificationBlock />
 
             {/* Statistics about expense reports of a user */}
-            <section className="grid grid-cols-2 gap-4 md:flex md:gap-8 md:justify-center">
+            <section className="grid grid-cols-2 gap-4 md:flex md:gap-8 md:justify-center mt-8">
                 <StatCard label={t('statistics.pending')} value={stats?.pending ?? "N/A"} />
                 <StatCard label={t('statistics.approved')} value={stats?.approved ?? "N/A"} />
                 <StatCard label={t('statistics.processed')} value={stats?.processed ?? "N/A"} />
