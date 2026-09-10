@@ -25,6 +25,19 @@
             "approved": "Approuvée",
             "denied": "Refusée",
             "processed": "Traitée"
+        },
+        "details": {
+            "title": "Détails de la note #{{id}}",
+            "fields": {
+                "title": "Titre",
+                "description": "Description",
+                "submittedBy": "Créateur",
+                "amount": "Montant",
+                "status": "Statut",
+                "attachments": "Pièces jointes",
+                "date": "Soumise le",
+                "comment": "Commentaire de la direction"
+            }
         }
     }
 }

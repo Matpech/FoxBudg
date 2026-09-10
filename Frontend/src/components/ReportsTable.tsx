@@ -1,6 +1,10 @@
 import { useTranslation } from "react-i18next"
 import type { ExpenseReport } from "../types/reports"
 import GenericButton from "./ui/GenericButton"
+import { useState } from "react"
+import { createPortal } from "react-dom"
+import Modal from "./ui/Modal"
+import DocumentDownloadButton from "./ui/DocumentDownloadButton"
 
 interface Props {
     reports: ExpenseReport[] | null
@@ -8,6 +12,8 @@ interface Props {
 
 function ReportsTable({ reports }: Props) {
     const { t } = useTranslation()
+
+    const [selectedReport, setSelectedReport] = useState<ExpenseReport | null>(null)
 
     return (
         <div className="relative mt-8">
@@ -52,7 +58,7 @@ function ReportsTable({ reports }: Props) {
                     <tbody>
                         {reports.map((report) => (
                             <tr key={report.id} className="even:bg-gray-200 dark:even:bg-zinc-900">
-                                <td className="px-2">{report.title}</td>
+                                <td className="px-2 cursor-pointer" onClick={() => setSelectedReport(report)}>{report.title}</td>
                                 <td className="px-2">{t(`reports.status.${report.status}`)}</td>
                                 <td className="px-2">{new Date(report.submitted_at).toLocaleString()}</td>
                             </tr>
@@ -60,6 +66,44 @@ function ReportsTable({ reports }: Props) {
                     </tbody>
                 </table>)}
             </div>
+
+            {selectedReport && createPortal(
+                <Modal title={t('reports.details.title', { id: selectedReport.id })} onClose={() => setSelectedReport(null)} >
+                    <div className="flex flex-col gap-4">
+                        {/* General information */}
+                        <div>
+                            <p><span className="text-yellow-600 font-semibold">{t('reports.details.fields.title')}:</span> {selectedReport.title}</p>
+                            {selectedReport.description && (
+                                <p><span className="text-yellow-600 font-semibold">{t('reports.details.fields.description')}:</span> {selectedReport.description}</p>
+                            )}
+                            <p><span className="text-yellow-600 font-semibold">{t('reports.details.fields.submittedBy')}:</span> {selectedReport.user ? `${selectedReport.user.first_name} ${selectedReport.user.last_name.toUpperCase()}` : "N/A"}</p>
+                            <p><span className="text-yellow-600 font-semibold">{t('reports.details.fields.amount')}:</span> {selectedReport.amount}€</p>
+                            <p><span className="text-yellow-600 font-semibold">{t('reports.details.fields.date')}:</span> {new Date(selectedReport.submitted_at).toLocaleString()}</p>
+                        </div>
+
+                        {/* Attached documents */}
+                        <div>
+                            <p><span className="text-yellow-600 font-semibold">{t('reports.details.fields.attachments')}:</span></p>
+                            <div className="flex gap-2">
+                                {selectedReport.files.map((attachment) => (
+                                    <DocumentDownloadButton
+                                        reportId={selectedReport.id}
+                                        document={attachment}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Status + comment */}
+                        <div>
+                            <p><span className="text-yellow-600 font-semibold">{t('reports.details.fields.status')}:</span> {t(`reports.status.${selectedReport.status}`)}</p>
+                            {selectedReport.comment && (
+                                <p><span className="text-yellow-600 font-semibold">{t('reports.details.fields.comment')}:</span> {selectedReport.comment}</p>
+                            )}
+                        </div>
+                    </div>
+                </Modal>, document.body
+            )}
         </div>
     )
 }

@@ -25,6 +25,19 @@
             "approved": "Approved",
             "denied": "Denied",
             "processed": "Processed"
+        },
+        "details": {
+            "title": "Details of report #{{id}}",
+            "fields": {
+                "title": "Title",
+                "description": "Description",
+                "submittedBy": "Submitted by",
+                "amount": "Amount",
+                "status": "Status",
+                "attachments": "Attached files",
+                "date": "Submitted on",
+                "comment": "Comment from management"
+            }
         }
     }
 }
