@@ -38,6 +38,18 @@
                 "date": "Soumise le",
                 "comment": "Commentaire de la direction"
             }
+        },
+        "new": {
+            "modalTitle": "Nouvelle note",
+            "labels": {
+                "title": "Titre",
+                "description": "Description",
+                "amount": "Montant",
+                "attachments": "Justificatifs"
+            },
+            "submitButton": "Soumettre",
+            "submitError": "Échec de l'envoi de la note",
+            "submitSuccess": "Note enregistrée"
         }
     }
 }

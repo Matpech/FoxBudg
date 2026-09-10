@@ -38,6 +38,18 @@
                 "date": "Submitted on",
                 "comment": "Comment from management"
             }
+        },
+        "new": {
+            "modalTitle": "New expense report",
+            "labels": {
+                "title": "Title",
+                "description": "Description",
+                "amount": "Amount",
+                "attachments": "Attachments"
+            },
+            "submitButton": "Submit",
+            "submitError": "Failed to submit the expense report",
+            "submitSuccess": "Successfully saved the expense report"
         }
     }
 }

@@ -5,6 +5,7 @@ import { useState } from "react"
 import { createPortal } from "react-dom"
 import Modal from "./ui/Modal"
 import DocumentDownloadButton from "./ui/DocumentDownloadButton"
+import NewReportModal from "./modals/NewReportModal"
 
 interface Props {
     reports: ExpenseReport[] | null
@@ -14,6 +15,7 @@ function ReportsTable({ reports }: Props) {
     const { t } = useTranslation()
 
     const [selectedReport, setSelectedReport] = useState<ExpenseReport | null>(null)
+    const [newModalOpen, setNewModalOpen] = useState(false)
 
     return (
         <div className="relative mt-8">
@@ -29,7 +31,7 @@ function ReportsTable({ reports }: Props) {
                 <div className="flex items-center justify-between mb-2 px-4 pt-3">
                     <p className="text-3xl font-bold">{t('reports.table.title')}</p>
                     <GenericButton
-                        click={() => {}}
+                        click={() => setNewModalOpen(true)}
                     >
                         {t('reports.table.buttonText')}
                     </GenericButton>
@@ -102,6 +104,13 @@ function ReportsTable({ reports }: Props) {
                             )}
                         </div>
                     </div>
+                </Modal>, document.body
+            )}
+
+            {/* TODO: Add function in props to force update the list of reports */}
+            {newModalOpen && createPortal(
+                <Modal title={t('reports.new.modalTitle')} onClose={() => setNewModalOpen(false)} >
+                    <NewReportModal close={() => setNewModalOpen(false)} />
                 </Modal>, document.body
             )}
         </div>

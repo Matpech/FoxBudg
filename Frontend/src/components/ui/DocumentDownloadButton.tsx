@@ -16,12 +16,13 @@ function DocumentDownloadButton({ document, reportId }: Props) {
             rel="noopener noreferrer"
             className="
                 flex flex-col items-center justify-center gap-2
-                aspect-square w-32 p-3
+                aspect-square w-32 p-3 shadow-sm
         
                 border border-yellow-600
-                
-                shadow-sm
-                focus:outline-none
+                hover:border-yellow-700
+                focus:outline-none focus:ring-2
+                focus:ring-yellow-500 focus:ring-offset-2
+                active:border-yellow-800
             "
             title={document.name}
         >
