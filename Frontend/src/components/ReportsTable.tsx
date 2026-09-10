@@ -9,9 +9,10 @@ import NewReportModal from "./modals/NewReportModal"
 
 interface Props {
     reports: ExpenseReport[] | null
+    reload: () => void
 }
 
-function ReportsTable({ reports }: Props) {
+function ReportsTable({ reports, reload }: Props) {
     const { t } = useTranslation()
 
     const [selectedReport, setSelectedReport] = useState<ExpenseReport | null>(null)
@@ -110,7 +111,7 @@ function ReportsTable({ reports }: Props) {
             {/* TODO: Add function in props to force update the list of reports */}
             {newModalOpen && createPortal(
                 <Modal title={t('reports.new.modalTitle')} onClose={() => setNewModalOpen(false)} >
-                    <NewReportModal close={() => setNewModalOpen(false)} />
+                    <NewReportModal close={() => setNewModalOpen(false)} onSuccess={reload} />
                 </Modal>, document.body
             )}
         </div>

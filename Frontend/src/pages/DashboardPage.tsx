@@ -12,7 +12,7 @@ export function DashboardPage() {
     const { t } = useTranslation('dashboard')
     const { user } = useContext(AuthContext)
     const { request } = useApiClient()
-    const { reports } = useSelfReports()
+    const { reports, load } = useSelfReports()
 
     const [stats, setStats] = useState<UserStats | null>(null)
 
@@ -47,7 +47,7 @@ export function DashboardPage() {
                 <StatCard label={t('statistics.totalAmount')} value={stats?.total_approved_amount ? stats.total_approved_amount + "€" : "N/A"} />
             </section>
 
-            <ReportsTable reports={reports} />
+            <ReportsTable reports={reports} reload={load} />
         </main>
     )
 }

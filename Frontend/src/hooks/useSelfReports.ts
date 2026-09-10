@@ -12,21 +12,23 @@ export function useSelfReports() {
 
     // Fetch reports automatically
     useEffect(() => {
-        async function fetchData() {
-            const response = await request<ExpenseReport[]>("/reports/self")
-
-            if (!response.ok) {
-                toast.error(t('toasts.errors.selfReportsFetchFailed'))
-                return
-            }
-
-            setReports(response.json)
-        }
-
-        fetchData()
+        load()
     }, [])
 
+    async function load() {
+        const response = await request<ExpenseReport[]>("/reports/self")
+
+        if (!response.ok) {
+            toast.error(t('toasts.errors.selfReportsFetchFailed'))
+            setReports(null)
+            return
+        }
+
+        setReports(response.json)
+    }
+
     return {
-        reports
+        reports,
+        load
     }
 }

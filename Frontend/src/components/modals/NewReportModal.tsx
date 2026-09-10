@@ -6,9 +6,10 @@ import toast from "react-hot-toast"
 
 interface Props {
     close: () => void
+    onSuccess: () => void
 }
 
-function NewReportModal({ close }: Props) {
+function NewReportModal({ close, onSuccess }: Props) {
     const { t } = useTranslation()
     const { request } = useApiClient()
 
@@ -57,6 +58,7 @@ function NewReportModal({ close }: Props) {
         } else {
             // Success : display a success toast and close the modal
             toast.success(t('reports.new.submitSuccess'))
+            onSuccess()
             close()
         }
     }
