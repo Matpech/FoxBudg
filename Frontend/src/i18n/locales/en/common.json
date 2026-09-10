@@ -7,5 +7,24 @@
             "adminPage": "User management",
             "logout": "Log out"
         }
+    },
+    "reports": {
+        "table": {
+            "title": "Expense reports",
+            "buttonText": "New report",
+            "loadingMessage": "Loading...",
+            "noReportsMessage": "No expense report available",
+            "headers": {
+                "title": "Title",
+                "status": "Status",
+                "date": "Submitted on"
+            }
+        },
+        "status": {
+            "pending": "Pending",
+            "approved": "Approved",
+            "denied": "Denied",
+            "processed": "Processed"
+        }
     }
 }

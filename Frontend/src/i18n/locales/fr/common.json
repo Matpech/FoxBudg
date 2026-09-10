@@ -7,5 +7,24 @@
             "adminPage": "Gestion utilisateurs",
             "logout": "Déconnexion"
         }
+    },
+    "reports": {
+        "table": {
+            "title": "Notes de frais",
+            "buttonText": "Nouvelle note",
+            "loadingMessage": "Chargement...",
+            "noReportsMessage": "Aucune note de frais disponible",
+            "headers": {
+                "title": "Titre",
+                "status": "Statut",
+                "date": "Soumise le"
+            }
+        },
+        "status": {
+            "pending": "En attente",
+            "approved": "Approuvée",
+            "denied": "Refusée",
+            "processed": "Traitée"
+        }
     }
 }

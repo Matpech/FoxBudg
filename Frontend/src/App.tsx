@@ -12,7 +12,7 @@ import { DashboardPage } from "./pages/DashboardPage"
 
 function App() {
   return (
-    <div className="dark:bg-zinc-950 transition-colors duration-200 h-screen">
+    <div className="dark:bg-zinc-950 h-screen">
       <AuthProvider>
         <BrowserRouter>
           <Routes>

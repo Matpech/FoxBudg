@@ -7,7 +7,8 @@
     },
     "toasts": {
         "errors": {
-            "authctxNoUser": "Cannot find your user ID. Please try to log out and log back in."
+            "authctxNoUser": "Cannot find your user ID. Please try to log out and log back in.",
+            "selfReportsFetchFailed": "Failed to fetch your expense reports"
         }
     }
 }
