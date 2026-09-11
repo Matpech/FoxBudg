@@ -56,7 +56,18 @@
             "pageName": "Reports Manager",
             "pageDescription": "Use this page to look for expense reports that you might want to process. If you wish to process an expense report, simply click on the name of the report in the table below.",
             "errors": {
-                "search": "Failed to fetch expense reports"
+                "search": "Failed to fetch expense reports",
+                "process": "Failed to process the expense report"
+            },
+            "messages": {
+                "processed": "Expense report marked as processed",
+                "approved": "Expense report successfully approved",
+                "denied": "Expense report successfully denied"
+            },
+            "actions": {
+                "approve": "Approve",
+                "deny": "Deny",
+                "process": "Mark as processed"
             }
         }
     }

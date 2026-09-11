@@ -8,9 +8,10 @@ import { AuthContext } from "../contexts/AuthContext";
 
 interface Props {
     reports: ExpenseReport[] | null
+    updateData: () => void
 }
 
-function AdvancedReportsTable({ reports }: Props) {
+function AdvancedReportsTable({ reports, updateData }: Props) {
     const { t } = useTranslation()
     const { user } = useContext(AuthContext)
 
@@ -75,7 +76,10 @@ function AdvancedReportsTable({ reports }: Props) {
 
             {selectedReport && createPortal(
                 <Modal title={"Test"} onClose={() => setSelectedReport(null)}>
-                    <ReportDetails report={selectedReport} showActionsFor={user?.role || undefined} />
+                    <ReportDetails report={selectedReport} showActionsFor={user?.role || undefined} close={() => {
+                        setSelectedReport(null)
+                        updateData()
+                    }} />
                 </Modal>, document.body
             )}
         </div>

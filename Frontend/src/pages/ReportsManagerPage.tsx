@@ -18,7 +18,7 @@ export function ReportsManagerPage() {
                 <p className="italic dark:text-white">{t('reports.manager.pageDescription')}</p>
             </div>
 
-            <AdvancedReportsTable reports={reports.results} />
+            <AdvancedReportsTable reports={reports.results} updateData={reports.search} />
 
             <div className={`mt-2 flex gap-1 justify-center items-center ${!reports.results && 'hidden'}`}>
                 <GenericButton click={() => {}} disabled={reports.searchParams.page <= 1}>
