@@ -7,6 +7,9 @@
         },
         "fetchStats": {
             "default": "Failed to fetch stats for this user"
+        },
+        "fetchUsers": {
+            "default": "Failed to fetch the list of user accounts"
         }
     },
     "stats": {
@@ -21,6 +24,19 @@
             "processed": "Processed reports",
             "totalAmount": "Total amount",
             "totalApproved": "Approved amount"
+        }
+    },
+    "userManager": {
+        "title": "User Manager",
+        "subtitle": "Here, you can manage all the users of the application.",
+        "newUser": "Create user account",
+        "table": {
+            "loadingMessage": "Loading users...",
+            "header": {
+                "name": "Full name",
+                "email": "Email address",
+                "role": "Role"
+            }
         }
     }
 }

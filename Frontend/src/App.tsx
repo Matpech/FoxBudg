@@ -11,6 +11,7 @@ import AppLayout from "./components/layout/AppLayout"
 import { DashboardPage } from "./pages/DashboardPage"
 import { ReportsManagerPage } from "./pages/ReportsManagerPage"
 import { ProfilePage } from "./pages/ProfilePage"
+import { UserManagerPage } from "./pages/UserManagerPage"
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
                 <Route path="dashboard" element={<AR><DashboardPage /></AR>} />
                 <Route path="reports" element={<AR><ReportsManagerPage /></AR>} />
                 <Route path="profile/:user_id" element={<AR><ProfilePage /></AR>} />
+                <Route path="admin" element={<AR><UserManagerPage /></AR>} />
               </Route>
             </Route>
           </Routes>

@@ -7,6 +7,9 @@
         },
         "fetchStats": {
             "default": "Échec de la récupération des statistiques de cet utilisateur"
+        },
+        "fetchUsers": {
+            "default": "Échec de la récupération des comptes utilisateur"
         }
     },
     "stats": {
@@ -21,6 +24,19 @@
             "processed": "Notes traitées",
             "totalAmount": "Montant total",
             "totalApproved": "Montant total approuvé"
+        }
+    },
+    "userManager": {
+        "title": "Gestion des utilisateurs",
+        "subtitle": "Ici, vous pouvez gérer tous les utilisateurs de l'application",
+        "newUser": "Créer un compte utilisateur",
+        "table": {
+            "loadingMessage": "Chargement des utilisateurs...",
+            "header": {
+                "name": "Nom complet",
+                "email": "Adresse email",
+                "role": "Rôle"
+            }
         }
     }
 }
