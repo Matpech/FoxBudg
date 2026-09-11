@@ -49,7 +49,6 @@ function AdvancedReportsTable({ reports, updateData }: Props) {
                             </tr>
                         </thead>
 
-                        {/* TODO: Highlight reports that require attention (especially with hidden statuses on mobile) */}
                         <tbody>
                             {reports.map((report) => (
                                 <tr
@@ -64,7 +63,7 @@ function AdvancedReportsTable({ reports, updateData }: Props) {
                                     onClick={() => setSelectedReport(report)}
                                 >
                                     <td className="px-2 not-md:py-1">{report.title}</td>
-                                    <td className="px-2 not-md:py-1">{report.user?.email ?? "N/A"}</td>
+                                    <td className="px-2 not-md:py-1 wrap-break-word">{report.user?.email ?? "N/A"}</td>
                                     <td className="px-2 not-md:py-1 not-md:hidden">{t(`reports.status.${report.status}`)}</td>
                                     <td className="px-2 not-md:py-1 not-md:hidden">{new Date(report.submitted_at).toLocaleString()}</td>
                                 </tr>

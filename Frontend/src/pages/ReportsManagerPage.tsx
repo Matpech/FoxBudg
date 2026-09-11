@@ -3,13 +3,25 @@ import AdvancedReportsTable from "../components/AdvancedReportsTable"
 import { useReports } from "../hooks/useReports"
 import GenericButton from "../components/ui/GenericButton"
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
+import { useContext, useEffect } from "react"
+import { AuthContext } from "../contexts/AuthContext"
+import { useNavigate } from "react-router-dom"
+import { useLocalizedPath } from "../hooks/useLocalizedPath"
 
 export function ReportsManagerPage() {
     const { t } = useTranslation()
+    const { user } = useContext(AuthContext)
+    const navigate = useNavigate()
+    const toLocalized = useLocalizedPath()
 
+    // Deny access to employees (only allow accountants and managers)
+    useEffect(() => {
+        if (!user || !['accountant', 'manager'].includes(user?.role)) {
+            navigate(toLocalized('/dashboard'))
+        }
+    }, [user])
+    
     const reports = useReports()
-
-    // TODO: Add access control
 
     return (
         <main>
