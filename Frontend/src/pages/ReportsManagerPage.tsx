@@ -21,32 +21,56 @@ export function ReportsManagerPage() {
             <AdvancedReportsTable reports={reports.results} updateData={reports.search} />
 
             <div className={`mt-2 flex gap-1 justify-center items-center ${!reports.results && 'hidden'}`}>
-                <GenericButton click={() => {}} disabled={reports.searchParams.page <= 1}>
+                <GenericButton
+                    click={() => reports.setSearchParams((prev) => ({
+                        ...prev,
+                        page: 1
+                    }))}
+                    disabled={reports.searchParams.page <= 1}
+                >
                     <div className="flex items-center gap-2">
                         <ChevronsLeft />
-                        <span className="not-md:hidden">First</span>
+                        <span className="not-md:hidden">{t('components.pagination.first')}</span>
                     </div>
                 </GenericButton>
 
-                <GenericButton click={() => {}} disabled={reports.searchParams.page <= 1}>
+                <GenericButton
+                    click={() => reports.setSearchParams((prev) => ({
+                        ...prev,
+                        page: prev.page - 1
+                    }))}
+                    disabled={reports.searchParams.page <= 1}
+                >
                     <div className="flex items-center gap-2">
                         <ChevronLeft />
-                        <span className="not-md:hidden">Previous</span>
+                        <span className="not-md:hidden">{t('components.pagination.previous')}</span>
                     </div>
                 </GenericButton>
 
                 <p className="px-4 text:lg md:text-xl dark:text-white">Page {reports.searchParams.page}/{reports.totalPages}</p>
 
-                <GenericButton click={() => {}} disabled={!reports.totalPages || reports.searchParams.page >= reports.totalPages}>
+                <GenericButton
+                    click={() => reports.setSearchParams((prev) => ({
+                        ...prev,
+                        page: prev.page + 1
+                    }))}
+                    disabled={!reports.totalPages || reports.searchParams.page >= reports.totalPages}
+                >
                     <div className="flex items-center gap-2">
-                        <span className="not-md:hidden">Next</span>
+                        <span className="not-md:hidden">{t('components.pagination.next')}</span>
                         <ChevronRight />
                     </div>
                 </GenericButton>
 
-                <GenericButton click={() => {}} disabled={!reports.totalPages || reports.searchParams.page >= reports.totalPages}>
+                <GenericButton
+                    click={() => reports.totalPages && reports.setSearchParams((prev) => ({
+                        ...prev,
+                        page: reports.totalPages as number
+                    }))}
+                    disabled={!reports.totalPages || reports.searchParams.page >= reports.totalPages}
+                >
                     <div className="flex items-center gap-2">
-                        <span className="not-md:hidden">Last</span>
+                        <span className="not-md:hidden">{t('components.pagination.last')}</span>
                         <ChevronsRight />
                     </div>
                 </GenericButton>

@@ -70,5 +70,13 @@
                 "process": "Mark as processed"
             }
         }
+    },
+    "components": {
+        "pagination": {
+            "first": "First",
+            "previous": "Previous",
+            "next": "Next",
+            "last": "Last"
+        }
     }
 }

@@ -70,5 +70,13 @@
                 "process": "Marquer comme traitée"
             }
         }
+    },
+    "components": {
+        "pagination": {
+            "first": "Début",
+            "previous": "Précédent",
+            "next": "Suivant",
+            "last": "Fin"
+        }
     }
 }
