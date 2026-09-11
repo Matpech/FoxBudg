@@ -1,5 +1,25 @@
 {
     "errors": {
-        "invalidId": "ID utilisateur invalide"
+        "invalidId": "ID utilisateur invalide",
+        "notFound": "Cet utilisateur n'existe pas",
+        "fetchProfile": {
+            "default": "Échec de la récupération du profil utilisateur"
+        },
+        "fetchStats": {
+            "default": "Échec de la récupération des statistiques de cet utilisateur"
+        }
+    },
+    "stats": {
+        "chart": {
+            "title": "Notes de frais",
+            "subtitle": "Nombre de notes de frais publiées par {{name}}, ordonnées par statut"
+        },
+        "cards": {
+            "pending": "Notes en attente",
+            "approved": "Notes approuvées",
+            "denied": "Notes refusées",
+            "processed": "Notes traitées",
+            "totalAmount": "Montant total approuvé"
+        }
     }
 }

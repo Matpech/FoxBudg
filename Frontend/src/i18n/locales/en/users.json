@@ -8,5 +8,18 @@
         "fetchStats": {
             "default": "Failed to fetch stats for this user"
         }
+    },
+    "stats": {
+        "chart": {
+            "title": "Expense reports",
+            "subtitle": "Number of reports submitted by {{name}}, ordered by status"
+        },
+        "cards": {
+            "pending": "Pending reports",
+            "approved": "Approved reports",
+            "denied": "Denied reports",
+            "processed": "Processed reports",
+            "totalAmount": "Approved amount"
+        }
     }
 }

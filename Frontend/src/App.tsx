@@ -14,7 +14,7 @@ import { ProfilePage } from "./pages/ProfilePage"
 
 function App() {
   return (
-    <div className="dark:bg-zinc-950 h-screen">
+    <div className="dark:bg-zinc-950 min-h-screen">
       <AuthProvider>
         <BrowserRouter>
           <Routes>
