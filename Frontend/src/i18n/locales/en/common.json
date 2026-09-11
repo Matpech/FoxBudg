@@ -42,7 +42,8 @@
             "commentInput": {
                 "label": "Comment",
                 "placeholder": "You may write a comment explaining your choice"
-            }
+            },
+            "profileLinkTitle": "View profile"
         },
         "new": {
             "modalTitle": "New expense report",

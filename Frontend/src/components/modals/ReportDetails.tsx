@@ -6,6 +6,8 @@ import GenericButton from "../ui/GenericButton"
 import { useApiClient } from "../../hooks/useApiClient"
 import toast from "react-hot-toast"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { useLocalizedPath } from "../../hooks/useLocalizedPath"
 
 interface Props {
     report: ExpenseReport
@@ -16,6 +18,8 @@ interface Props {
 function ReportDetails({ report, showActionsFor, close }: Props) {
     const { t } = useTranslation()
     const { request } = useApiClient()
+    const navigate = useNavigate()
+    const toLocalized = useLocalizedPath()
 
     const [comment, setComment] = useState("")
 
@@ -81,7 +85,7 @@ function ReportDetails({ report, showActionsFor, close }: Props) {
                 {report.description && (
                     <p><span className="text-yellow-600 font-semibold">{t('reports.details.fields.description')}:</span> {report.description}</p>
                 )}
-                <p><span className="text-yellow-600 font-semibold">{t('reports.details.fields.submittedBy')}:</span> {report.user ? `${report.user.first_name} ${report.user.last_name.toUpperCase()} (${report.user.email})` : "N/A"}</p>
+                <p><span className="text-yellow-600 font-semibold">{t('reports.details.fields.submittedBy')}:</span> <span title={t('reports.details.profileLinkTitle')} className="hover:underline cursor-pointer" onClick={() => report.user?.id && navigate(toLocalized(`/profile/${report.user?.id}`))}>{report.user ? `${report.user.first_name} ${report.user.last_name.toUpperCase()} (${report.user.email})` : "N/A"}</span></p>
                 <p><span className="text-yellow-600 font-semibold">{t('reports.details.fields.amount')}:</span> {report.amount}€</p>
                 <p><span className="text-yellow-600 font-semibold">{t('reports.details.fields.date')}:</span> {new Date(report.submitted_at).toLocaleString()}</p>
             </div>
