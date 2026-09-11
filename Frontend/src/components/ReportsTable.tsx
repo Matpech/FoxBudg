@@ -76,7 +76,6 @@ function ReportsTable({ reports, reload }: Props) {
                 </Modal>, document.body
             )}
 
-            {/* TODO: Add function in props to force update the list of reports */}
             {newModalOpen && createPortal(
                 <Modal title={t('reports.new.modalTitle')} onClose={() => setNewModalOpen(false)} >
                     <NewReportModal close={() => setNewModalOpen(false)} onSuccess={reload} />
