@@ -16,8 +16,6 @@ function AdvancedReportsTable({ reports }: Props) {
 
     const [selectedReport, setSelectedReport] = useState<ExpenseReport | null>(null)
 
-    // TODO: Add access control checks
-
     return (
         <div className="relative">
             <div className="
@@ -55,7 +53,13 @@ function AdvancedReportsTable({ reports }: Props) {
                             {reports.map((report) => (
                                 <tr
                                     key={report.id}
-                                    className="even:bg-gray-200 dark:even:bg-zinc-900 cursor-pointer"
+                                    className={`
+                                        even:bg-gray-200 dark:even:bg-zinc-900
+                                        cursor-pointer
+
+                                        ${user?.role === 'accountant' && report.status === 'approved' && 'bg-yellow-600/20! font-semibold'}
+                                        ${user?.role === 'manager' && report.status === 'pending' && 'bg-yellow-600/20! font-semibold'}
+                                    `}
                                     onClick={() => setSelectedReport(report)}
                                 >
                                     <td className="px-2 not-md:py-1">{report.title}</td>

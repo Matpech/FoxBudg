@@ -9,6 +9,8 @@ export function ReportsManagerPage() {
 
     const reports = useReports()
 
+    // TODO: Add access control
+
     return (
         <main>
             <div className="mb-8">
@@ -33,7 +35,7 @@ export function ReportsManagerPage() {
                     </div>
                 </GenericButton>
 
-                <p className="px-4 text-xl dark:text-white">Page {reports.searchParams.page}/{reports.totalPages}</p>
+                <p className="px-4 text:lg md:text-xl dark:text-white">Page {reports.searchParams.page}/{reports.totalPages}</p>
 
                 <GenericButton click={() => {}} disabled={!reports.totalPages || reports.searchParams.page >= reports.totalPages}>
                     <div className="flex items-center gap-2">
