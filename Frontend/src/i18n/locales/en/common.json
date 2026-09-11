@@ -38,6 +38,10 @@
                 "attachments": "Attached files",
                 "date": "Submitted on",
                 "comment": "Comment from management"
+            },
+            "commentInput": {
+                "label": "Comment",
+                "placeholder": "You may write a comment explaining your choice"
             }
         },
         "new": {

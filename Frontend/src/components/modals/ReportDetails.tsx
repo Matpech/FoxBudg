@@ -5,6 +5,7 @@ import type { UserRole } from "../../types/users"
 import GenericButton from "../ui/GenericButton"
 import { useApiClient } from "../../hooks/useApiClient"
 import toast from "react-hot-toast"
+import { useState } from "react"
 
 interface Props {
     report: ExpenseReport
@@ -15,6 +16,8 @@ interface Props {
 function ReportDetails({ report, showActionsFor, close }: Props) {
     const { t } = useTranslation()
     const { request } = useApiClient()
+
+    const [comment, setComment] = useState("")
 
     async function handleProcess() {
         const response = await request(`/reports/-/${report.id}`, {
@@ -31,9 +34,14 @@ function ReportDetails({ report, showActionsFor, close }: Props) {
     }
 
     async function handleApprove() {
+        const payload = {
+            newStatus: 'approved',
+            comment: comment.trim() !== "" ? comment.trim() : undefined
+        }
+
         const response = await request(`/reports/-/${report.id}`, {
             method: "PATCH",
-            body: JSON.stringify({ newStatus: 'approved' })
+            body: JSON.stringify(payload)
         })
 
         if (!response.ok) {
@@ -46,9 +54,14 @@ function ReportDetails({ report, showActionsFor, close }: Props) {
     }
 
     async function handleDeny() {
+        const payload = {
+            newStatus: 'denied',
+            comment: comment.trim() !== "" ? comment.trim() : undefined
+        }
+
         const response = await request(`/reports/-/${report.id}`, {
             method: "PATCH",
-            body: JSON.stringify({ newStatus: 'denied' })
+            body: JSON.stringify(payload)
         })
 
         if (!response.ok) {
@@ -107,22 +120,51 @@ function ReportDetails({ report, showActionsFor, close }: Props) {
             )}
 
             {showActionsFor === 'manager' && report.status === 'pending' && (
-                <div className="flex justify-end gap-2">
-                    {/* TODO: Add comment field */}
-                    <GenericButton
-                        type="green"
-                        click={() => handleApprove()}
-                    >
-                        {t('reports.manager.actions.approve')}
-                    </GenericButton>
+                <div>
+                    <div>
+                        <label
+                            htmlFor="comment"
+                            className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-100"
+                        >
+                            {t('reports.details.commentInput.label')}
+                        </label>
 
-                    <GenericButton
-                        type="danger"
-                        click={() => handleDeny()}
-                    >
-                        {t('reports.manager.actions.deny')}
-                    </GenericButton>
+                        <textarea
+                            id="comment"
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            placeholder={t('reports.details.commentInput.placeholder')}
+                            rows={3}
+                            className="
+                                w-full border border-gray-300
+                                bg-white px-1 py-1 text-sm text-gray-900
+                                outline-none transition
+                                placeholder:text-gray-400
+                                focus:border-yellow-500
+                                focus:ring-2 focus:ring-yellow-500/20
+                            "
+                        >
+
+                        </textarea>
+                    </div>
+
+                    <div className="flex justify-end gap-2">
+                        <GenericButton
+                            type="green"
+                            click={() => handleApprove()}
+                        >
+                            {t('reports.manager.actions.approve')}
+                        </GenericButton>
+
+                        <GenericButton
+                            type="danger"
+                            click={() => handleDeny()}
+                        >
+                            {t('reports.manager.actions.deny')}
+                        </GenericButton>
+                    </div>
                 </div>
+
             )}
         </div>
     )

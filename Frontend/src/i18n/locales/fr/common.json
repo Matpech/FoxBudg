@@ -38,6 +38,10 @@
                 "attachments": "Pièces jointes",
                 "date": "Soumise le",
                 "comment": "Commentaire de la direction"
+            },
+            "commentInput": {
+                "label": "Commentaire",
+                "placeholder": "Vous pouvez écrire un commentaire expliquant votre choix ici"
             }
         },
         "new": {
