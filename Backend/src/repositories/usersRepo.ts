@@ -180,6 +180,7 @@ interface UserReportStats {
     approved: number
     denied: number
     processed: number
+    total_amount: number
     total_approved_amount: number
 }
 
@@ -227,6 +228,12 @@ export async function getUserReportStats(userId: number): Promise<UserReportStat
                         WHERE user_id = $1
                         AND status = 'processed'
                     )::integer AS processed,
+                    (
+                        SELECT COALESCE(SUM(amount), 0)
+                        FROM expense_reports
+                        WHERE user_id = $1
+                        AND status IN ('pending', 'approved', 'processed')
+                    ) AS total_amount,
                     (
                         SELECT COALESCE(SUM(amount), 0)
                         FROM expense_reports

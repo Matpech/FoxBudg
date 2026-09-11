@@ -76,7 +76,7 @@ export function ProfilePage() {
             {/* User information */}
             {profile && (<section>
                 <Card className="w-full flex gap-8 items-center">
-                    <UserIcon size={width < 768 ? 'small' : 'large'} role={user?.role ?? 'employee'} />
+                    <UserIcon size={width < 768 ? 'small' : 'large'} role={profile.role} />
                     
                     <div className="dark:text-white flex flex-col gap-3">
                         <h2 className="text-3xl md:text-5xl font-bold text-yellow-600">{profile.first_name} {profile.last_name.toUpperCase()}</h2>
@@ -107,7 +107,8 @@ export function ProfilePage() {
                             <StatCard className="w-full!" label={t('stats.cards.approved', { ns: 'users' })} value={stats.approved} />
                             <StatCard className="w-full!" label={t('stats.cards.denied', { ns: 'users' })} value={stats.denied} />
                             <StatCard className="w-full!" label={t('stats.cards.processed', { ns: 'users' })} value={stats.processed} />
-                            <StatCard className="w-full!" label={t('stats.cards.totalAmount', { ns: 'users' })} value={`${stats.total_approved_amount}€`} />
+                            <StatCard className="w-full!" label={t('stats.cards.totalAmount', { ns: 'users' })} value={`${stats.total_amount}€`} />
+                            <StatCard className="w-full!" label={t('stats.cards.totalApproved', { ns: 'users' })} value={`${stats.total_approved_amount}€`} />
                         </div>
                     </div>
                 </section>

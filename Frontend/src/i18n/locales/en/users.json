@@ -19,7 +19,8 @@
             "approved": "Approved reports",
             "denied": "Denied reports",
             "processed": "Processed reports",
-            "totalAmount": "Approved amount"
+            "totalAmount": "Total amount",
+            "totalApproved": "Approved amount"
         }
     }
 }

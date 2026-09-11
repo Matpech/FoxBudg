@@ -19,7 +19,8 @@
             "approved": "Notes approuvées",
             "denied": "Notes refusées",
             "processed": "Notes traitées",
-            "totalAmount": "Montant total approuvé"
+            "totalAmount": "Montant total",
+            "totalApproved": "Montant total approuvé"
         }
     }
 }

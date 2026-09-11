@@ -14,5 +14,6 @@ export interface UserStats {
     approved: number
     denied: number
     processed: number
+    total_amount: number
     total_approved_amount: number
 }
