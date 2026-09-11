@@ -1,6 +1,6 @@
 {
     "header": {
-        "slogan": "Faites comme si il y avait un slogan",
+        "slogan": "Contrôlez votre Budg'",
         "navigation": {
             "myProfile": "Mon profil",
             "reportsPage": "Notes de frais",
@@ -81,6 +81,13 @@
             "previous": "Précédent",
             "next": "Suivant",
             "last": "Fin"
+        }
+    },
+    "users": {
+        "roles": {
+            "employee": "Employé",
+            "accountant": "Comptable",
+            "manager": "Manager"
         }
     }
 }

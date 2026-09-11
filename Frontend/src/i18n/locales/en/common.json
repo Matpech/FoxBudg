@@ -1,6 +1,6 @@
 {
     "header": {
-        "slogan": "Pretend there's a slogan here",
+        "slogan": "Control your Budg'",
         "navigation": {
             "myProfile": "My profile",
             "reportsPage": "Expense reports",
@@ -81,6 +81,13 @@
             "previous": "Previous",
             "next": "Next",
             "last": "Last"
+        }
+    },
+    "users": {
+        "roles": {
+            "employee": "Employee",
+            "accountant": "Accountant",
+            "manager": "Manager"
         }
     }
 }

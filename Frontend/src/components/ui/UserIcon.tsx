@@ -13,18 +13,18 @@ function UserIcon({ role }: Props) {
     }[role]
 
     return (
-        <div className="relative inline-flex w-12 h-12">
-            <User size={64} />
+        <div className="relative inline-flex w-32 h-32">
+            <User size={128} className="text-yellow-600" />
 
             <div className="
                 absolute
                 bottom-0 right-0
                 flex items-center justify-center
-                w-6 h-6
+                w-12 h-12
                 rounded-full
                 bg-gray-50 dark:bg-zinc-900
             ">
-                <RoleIcon size={20} />
+                <RoleIcon size={32} className="text-yellow-600" />
             </div>
         </div>
     )

@@ -2,11 +2,12 @@ import type { ReactNode } from "react"
 
 interface Props {
     children: ReactNode
+    className?: string
 }
 
-function Card({ children }: Props) {
+function Card({ children, className }: Props) {
     return (
-        <div className="
+        <div className={`
             p-8
             bg-white/90 dark:bg-zinc-900
             border border-yellow-600
@@ -17,7 +18,9 @@ function Card({ children }: Props) {
             before:w-6 before:h-6
             before:border-t-2 before:border-l-2
             before:border-yellow-600
-        ">
+
+            ${className}
+        `}>
             {children}
         </div>
     )

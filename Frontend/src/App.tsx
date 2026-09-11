@@ -10,6 +10,7 @@ import AR from "./components/routing/AuthenticatedRoute"
 import AppLayout from "./components/layout/AppLayout"
 import { DashboardPage } from "./pages/DashboardPage"
 import { ReportsManagerPage } from "./pages/ReportsManagerPage"
+import { ProfilePage } from "./pages/ProfilePage"
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route element={<AppLayout />} >
                 <Route path="dashboard" element={<AR><DashboardPage /></AR>} />
                 <Route path="reports" element={<AR><ReportsManagerPage /></AR>} />
+                <Route path="profile/:user_id" element={<AR><ProfilePage /></AR>} />
               </Route>
             </Route>
           </Routes>

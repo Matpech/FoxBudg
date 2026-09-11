@@ -1,0 +1,12 @@
+{
+    "errors": {
+        "invalidId": "Invalid user ID",
+        "notFound": "This user does not exist",
+        "fetchProfile": {
+            "default": "Failed to fetch user information"
+        },
+        "fetchStats": {
+            "default": "Failed to fetch stats for this user"
+        }
+    }
+}
