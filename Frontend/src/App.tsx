@@ -9,6 +9,7 @@ import UR from "./components/routing/UnauthenticatedRoute"
 import AR from "./components/routing/AuthenticatedRoute"
 import AppLayout from "./components/layout/AppLayout"
 import { DashboardPage } from "./pages/DashboardPage"
+import { ReportsManagerPage } from "./pages/ReportsManagerPage"
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               {/* Main application routes : authenticated access */}
               <Route element={<AppLayout />} >
                 <Route path="dashboard" element={<AR><DashboardPage /></AR>} />
+                <Route path="reports" element={<AR><ReportsManagerPage /></AR>} />
               </Route>
             </Route>
           </Routes>

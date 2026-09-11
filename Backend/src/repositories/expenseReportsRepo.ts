@@ -219,6 +219,7 @@ interface SearchOutput {
     total: number
     results: ExpenseReport[]
     next: boolean
+    pages: number
 }
 
 /**
@@ -304,7 +305,8 @@ export async function searchReports(params?: ExpenseReportSearchParams): Promise
         return {
             total: countResult.rows[0].count,
             results: result.rows.slice(0, resultsPerPage),
-            next: (result.rowCount === resultsPerPage + 1)
+            next: (result.rowCount === resultsPerPage + 1),
+            pages: Math.ceil(countResult.rows[0].count / resultsPerPage)
         }
     } catch (error) {
         throw new DatabaseException(error as Error)

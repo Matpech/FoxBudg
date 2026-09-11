@@ -17,6 +17,7 @@
             "headers": {
                 "title": "Title",
                 "status": "Status",
+                "user": "Submitted by",
                 "date": "Submitted on"
             }
         },
@@ -50,6 +51,13 @@
             "submitButton": "Submit",
             "submitError": "Failed to submit the expense report",
             "submitSuccess": "Successfully saved the expense report"
+        },
+        "manager": {
+            "pageName": "Reports Manager",
+            "pageDescription": "Use this page to look for expense reports that you might want to process. If you wish to process an expense report, simply click on the name of the report in the table below.",
+            "errors": {
+                "search": "Failed to fetch expense reports"
+            }
         }
     }
 }

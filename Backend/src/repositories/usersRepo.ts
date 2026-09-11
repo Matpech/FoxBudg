@@ -155,6 +155,8 @@ export async function updateUser(userId: number, newDetails: UserUpdateParams, u
  * This operation will delete all active sessions tied to the user (ON DELETE CASCADE).
  * It will also mark all expense reports from the user with user = NULL (ON DELETE SET NULL).
  * 
+ * TODO: Automatically deny all pending expenses requests from the user
+ * 
  * @param userId The ID of the user to delete
  * @throws NotFoundException or DatabaseException
  */

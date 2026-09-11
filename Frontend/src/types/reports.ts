@@ -21,3 +21,15 @@ export interface ExpenseReport {
     submitted_at: string
     comment?: string
 }
+
+export interface ExpenseReportSearchParams {
+    page: number
+    status?: ExpenseReportStatus[]
+}
+
+export interface ExpenseReportSearchResults {
+    total: number
+    results: ExpenseReport[]
+    next: boolean,
+    pages: number
+}

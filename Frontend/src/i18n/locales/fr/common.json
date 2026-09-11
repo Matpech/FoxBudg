@@ -17,6 +17,7 @@
             "headers": {
                 "title": "Titre",
                 "status": "Statut",
+                "user": "Soumise par",
                 "date": "Soumise le"
             }
         },
@@ -50,6 +51,13 @@
             "submitButton": "Soumettre",
             "submitError": "Échec de l'envoi de la note",
             "submitSuccess": "Note enregistrée"
+        },
+        "manager": {
+            "pageName": "Gestion des notes de frais",
+            "pageDescription": "Utilisez cette page pour chercher parmi les notes de frais des employés de l'entreprise. Pour traiter une note, cliquez simplement sur une ligne dans le tableau.",
+            "errors": {
+                "search": "Échec de la récupération des notes de frais"
+            }
         }
     }
 }
