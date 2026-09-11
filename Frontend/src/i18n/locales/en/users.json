@@ -37,6 +37,11 @@
                 "email": "Email address",
                 "role": "Role"
             }
+        },
+        "errors": {
+            "emailTaken": "This email is already in use",
+            "validationError": "The provided user information is invalid",
+            "createAccount": "An error occured while registering the account"
         }
     }
 }

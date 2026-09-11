@@ -37,7 +37,7 @@ export function UserManagerPage() {
                 </GenericButton>
             </div>
 
-            <UsersTable users={accountManager.users} update={() => accountManager.loadUsers()} />
+            <UsersTable users={accountManager.users} />
         </main>
     )
 }

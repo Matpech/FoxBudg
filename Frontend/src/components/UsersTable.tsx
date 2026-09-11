@@ -3,10 +3,9 @@ import type { User } from "../types/users"
 
 interface Props {
     users: User[] | null
-    update: () => void
 }
 
-function UsersTable({ users, update }: Props) {
+function UsersTable({ users }: Props) {
     const { t } = useTranslation(['users', 'common'])
 
     return (
