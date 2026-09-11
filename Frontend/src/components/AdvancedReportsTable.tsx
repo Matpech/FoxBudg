@@ -74,7 +74,7 @@ function AdvancedReportsTable({ reports, updateData }: Props) {
             </div>
 
             {selectedReport && createPortal(
-                <Modal title={"Test"} onClose={() => setSelectedReport(null)}>
+                <Modal title={t('reports.details.title', { id: selectedReport.id })} onClose={() => setSelectedReport(null)}>
                     <ReportDetails report={selectedReport} showActionsFor={user?.role || undefined} close={() => {
                         setSelectedReport(null)
                         updateData()
