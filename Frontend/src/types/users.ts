@@ -1,6 +1,6 @@
 export type UserRole = 'employee' | 'accountant' | 'manager'
 
-export interface AuthenticatedUser {
+export interface User {
     id: number
     email: string
     first_name: string

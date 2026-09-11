@@ -1,5 +1,5 @@
 import toast from "react-hot-toast"
-import type { AuthenticatedUser } from "../types/users"
+import type { User } from "../types/users"
 import { useApiClient } from "./useApiClient"
 import { AuthContext } from "../contexts/AuthContext"
 import { useContext } from "react"
@@ -17,7 +17,7 @@ export function useAuth() {
     const toLocalized = useLocalizedPath()
 
     async function login(email: string, password: string, newPassword?: string): Promise<LoginResult> {
-        const response = await request<AuthenticatedUser>("/auth/login", {
+        const response = await request<User>("/auth/login", {
             method: "POST",
             body: JSON.stringify({ email, password, newPassword })
         })
