@@ -1,8 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom"
 import Card from "../components/ui/Card"
 import UserIcon from "../components/ui/UserIcon"
-import { useContext, useEffect, useState } from "react"
-import { AuthContext } from "../contexts/AuthContext"
+import { useEffect, useState } from "react"
 import type { User, UserStats } from "../types/users"
 import { useApiClient } from "../hooks/useApiClient"
 import toast from "react-hot-toast"
@@ -15,7 +14,6 @@ import { useWindowWidth } from "../hooks/useWindowWidth"
 export function ProfilePage() {
     const { t } = useTranslation(['common', 'users'])
     const { user_id } = useParams()
-    const { user } = useContext(AuthContext)
     const { request } = useApiClient()
     const navigate = useNavigate()
     const toLocalized = useLocalizedPath()

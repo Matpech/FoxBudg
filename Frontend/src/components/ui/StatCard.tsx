@@ -10,6 +10,7 @@ function StatCard({ label, value, className }: Props) {
                 relative flex flex-col items-center justify-center
                 border border-yellow-600 p-2 w-full md:w-56 h-40
                 text-center dark:text-white
+                bg-white/90 dark:bg-zinc-900
 
                 before:absolute
                 before:top-0 before:left-0
