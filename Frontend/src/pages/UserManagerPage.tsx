@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { AuthContext } from "../contexts/AuthContext"
 import { useNavigate } from "react-router-dom"
@@ -6,6 +6,11 @@ import { useLocalizedPath } from "../hooks/useLocalizedPath"
 import { useAccountManager } from "../hooks/useAccountManager"
 import UsersTable from "../components/UsersTable"
 import GenericButton from "../components/ui/GenericButton"
+import { createPortal } from "react-dom"
+import Modal from "../components/ui/Modal"
+import NewAccountModal from "../components/modals/NewAccountModal"
+import type { UserCreateParams } from "../types/users"
+import toast from "react-hot-toast"
 
 export function UserManagerPage() {
     const { t } = useTranslation(['users', 'common'])
@@ -15,11 +20,25 @@ export function UserManagerPage() {
 
     const accountManager = useAccountManager()
 
+    const [createModalOpen, setCreateModalOpen] = useState(false)
+
     useEffect(() => {
         if (user?.role !== 'manager') {
             navigate(toLocalized('/dashboard'))
         }
     }, [user])
+
+    async function handleUserCreation(details: UserCreateParams) {
+        try {
+            await accountManager.createAccount(details)
+            toast.success(t('userManager.newUser.successToast'))
+        } catch (error) {
+            if (error instanceof Error) toast.error(error.message)
+            else toast.error(t('userManager.errors.createAccount'))
+        }
+
+        setCreateModalOpen(false)
+    }
 
     return (
         <main>
@@ -29,12 +48,17 @@ export function UserManagerPage() {
                     <p className="italic dark:text-white">{t('userManager.subtitle')}</p>
                 </div>
 
-                {/* TODO: Add a modal to create a user */}
                 <GenericButton
-                    click={() => {}}
+                    click={() => setCreateModalOpen(true)}
                 >
-                    {t('userManager.newUser')}
+                    {t('userManager.newUser.create')}
                 </GenericButton>
+
+                {createModalOpen && createPortal(
+                    <Modal title={t('userManager.newUser.create')} onClose={() => setCreateModalOpen(false)} >
+                        <NewAccountModal submit={(details) => handleUserCreation(details)} />
+                    </Modal>, document.body
+                )}
             </div>
 
             <UsersTable users={accountManager.users} />

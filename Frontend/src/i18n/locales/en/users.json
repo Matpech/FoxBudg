@@ -29,7 +29,19 @@
     "userManager": {
         "title": "User Manager",
         "subtitle": "Here, you can manage all the users of the application.",
-        "newUser": "Create user account",
+        "newUser": {
+            "create": "Create user account",
+            "modal": {
+                "labels": {
+                    "email": "Email address",
+                    "firstName": "First name",
+                    "lastName": "Last name",
+                    "role": "Role"
+                },
+                "submit": "Create account"
+            },
+            "successToast": "User successfully registered"
+        },
         "table": {
             "loadingMessage": "Loading users...",
             "header": {

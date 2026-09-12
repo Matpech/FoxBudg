@@ -29,7 +29,19 @@
     "userManager": {
         "title": "Gestion des utilisateurs",
         "subtitle": "Ici, vous pouvez gérer tous les utilisateurs de l'application",
-        "newUser": "Créer un compte utilisateur",
+        "newUser": {
+            "create": "Créer un compte utilisateur",
+            "modal": {
+                "labels": {
+                    "email": "Adresse email",
+                    "firstName": "Prénom",
+                    "lastName": "Nom",
+                    "role": "Rôle"
+                },
+                "submit": "Créer le compte"
+            },
+            "successToast": "Utilisateur enregistré avec succès"
+        },
         "table": {
             "loadingMessage": "Chargement des utilisateurs...",
             "header": {

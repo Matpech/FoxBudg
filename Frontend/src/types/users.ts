@@ -17,3 +17,5 @@ export interface UserStats {
     total_amount: number
     total_approved_amount: number
 }
+
+export type UserCreateParams = Omit<User, 'id'>
