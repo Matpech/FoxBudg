@@ -11,6 +11,7 @@ import Modal from "../components/ui/Modal"
 import NewAccountModal from "../components/modals/NewAccountModal"
 import type { UserCreateParams } from "../types/users"
 import toast from "react-hot-toast"
+import RegistrationSuccessModal from "../components/modals/RegistrationSuccessModal"
 
 export function UserManagerPage() {
     const { t } = useTranslation(['users', 'common'])
@@ -21,6 +22,8 @@ export function UserManagerPage() {
     const accountManager = useAccountManager()
 
     const [createModalOpen, setCreateModalOpen] = useState(false)
+    const [createSuccessModalOpen, setCreateSuccessModalOpen] = useState(false)
+    const [password, setPassword] = useState("")
 
     useEffect(() => {
         if (user?.role !== 'manager') {
@@ -30,8 +33,12 @@ export function UserManagerPage() {
 
     async function handleUserCreation(details: UserCreateParams) {
         try {
-            await accountManager.createAccount(details)
+            const result = await accountManager.createAccount(details)
             toast.success(t('userManager.newUser.successToast'))
+
+            // Show the post registration modal to ask the manager to copy the password
+            setPassword(result.password)
+            setCreateSuccessModalOpen(true)
         } catch (error) {
             if (error instanceof Error) toast.error(error.message)
             else toast.error(t('userManager.errors.createAccount'))
@@ -57,6 +64,15 @@ export function UserManagerPage() {
                 {createModalOpen && createPortal(
                     <Modal title={t('userManager.newUser.create')} onClose={() => setCreateModalOpen(false)} >
                         <NewAccountModal submit={(details) => handleUserCreation(details)} />
+                    </Modal>, document.body
+                )}
+
+                {createSuccessModalOpen && createPortal(
+                    <Modal title={t('userManager.newUser.postRegister.title')}>
+                        <RegistrationSuccessModal
+                            password={password}
+                            onAcknowledge={() => setCreateSuccessModalOpen(false)}
+                        />
                     </Modal>, document.body
                 )}
             </div>

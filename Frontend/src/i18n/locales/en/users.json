@@ -40,7 +40,18 @@
                 },
                 "submit": "Create account"
             },
-            "successToast": "User successfully registered"
+            "successToast": "User successfully registered",
+            "postRegister": {
+                "title": "User registered !",
+                "subtitle": "What's next ?",
+                "instructions": "A default password has been generated for the user's first login. They will have to update it to use the application.\n\nPlease transmit this password to the user. It CANNOT be viewed again.",
+                "buttonDisabledMessage": "You will be able to close this modal after 5 seconds",
+                "buttonText": "I transmitted the password to the user",
+                "tooltips": {
+                    "showPassword": "Show password",
+                    "copyPassword": "Copy password"
+                }
+            }
         },
         "table": {
             "loadingMessage": "Loading users...",

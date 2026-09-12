@@ -6,13 +6,15 @@ interface Props {
     click: Function
     disabled?: boolean
     className?: string
+    title?: string
 }
 
-function GenericButton({ type = 'primary', children, click, disabled, className }: Props) {
+function GenericButton({ type = 'primary', children, click, disabled, className, title }: Props) {
     return (
         <button
             onClick={() => click()}
             disabled={disabled}
+            title={title}
             className={`
                 px-4 py-3
                 text-sm font-semibold text-white

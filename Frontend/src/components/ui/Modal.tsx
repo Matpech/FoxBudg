@@ -4,7 +4,7 @@ import { useEffect, useState, type ReactNode } from "react";
 interface Props {
     children: ReactNode,
     title: string,
-    onClose: () => void
+    onClose?: () => void
 }
 
 function Modal({ children, title, onClose }: Props) {
@@ -17,6 +17,8 @@ function Modal({ children, title, onClose }: Props) {
     }, [])
 
     function handleClose() {
+        if (!onClose) return
+
         setVisible(false)
         setTimeout(() => {
             onClose()
@@ -25,7 +27,7 @@ function Modal({ children, title, onClose }: Props) {
     
     return (
         <div
-            onClick={handleClose}
+            onClick={onClose ? handleClose : () => {}}
             className={`
                 fixed inset-0 z-1000
                 flex items-center justify-center
@@ -53,7 +55,7 @@ function Modal({ children, title, onClose }: Props) {
                 >
                     <div className="flex items-center justify-between mb-4">
                         <p className="text-xl font-bold">{title}</p>
-                        <button onClick={handleClose} className="cursor-pointer">
+                        <button onClick={onClose ? handleClose : () => {}} className={`cursor-pointer ${!onClose && 'hidden'}`}>
                             <CircleX />
                         </button>
                     </div>

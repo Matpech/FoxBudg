@@ -33,8 +33,13 @@ export function useAccountManager() {
         role: UserRole
     }
 
-    async function createAccount(details: UserCreateParams) {
-        const response = await request<{ user: User, password: string }>("/users", {
+    interface UserCreateResult {
+        user: User
+        password: string
+    }
+
+    async function createAccount(details: UserCreateParams): Promise<UserCreateResult> {
+        const response = await request<UserCreateResult>("/users", {
             method: "POST",
             body: JSON.stringify(details)
         })
@@ -46,6 +51,7 @@ export function useAccountManager() {
         }
 
         loadUsers()
+        return response.json
     }
 
     return {

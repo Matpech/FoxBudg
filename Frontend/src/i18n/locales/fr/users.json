@@ -40,7 +40,18 @@
                 },
                 "submit": "Créer le compte"
             },
-            "successToast": "Utilisateur enregistré avec succès"
+            "successToast": "Utilisateur enregistré avec succès",
+            "postRegister": {
+                "title": "Utilisateur enregistré !",
+                "subtitle": "Et maintenant ?",
+                "instructions": "Un mot de passe par défaut a été généré pour la première connexion de l'utilisateur. L'utilisateur devra le mettre à jour pour utiliser l'application.\n\nMerci de le transmettre à l'utilisateur. Il NE PEUT PAS être vu à nouveau.",
+                "buttonDisabledMessage": "Vous pourrez fermer cette modale après 5 secondes",
+                "buttonText": "J'ai transmis le mot de passe à l'utilisateur",
+                "tooltips": {
+                    "showPassword": "Afficher le mot de passe",
+                    "copyPassword": "Copier le mot de passe"
+                }
+            }
         },
         "table": {
             "loadingMessage": "Chargement des utilisateurs...",
