@@ -10,6 +10,9 @@
         },
         "fetchUsers": {
             "default": "Échec de la récupération des comptes utilisateur"
+        },
+        "deleteUser": {
+            "default": "Échec de la suppression du compte"
         }
     },
     "stats": {
@@ -52,6 +55,11 @@
                     "copyPassword": "Copier le mot de passe"
                 }
             }
+        },
+        "deleteUser": {
+            "title": "Confirmer la suppression du compte",
+            "message": "Êtes vous sûr de vouloir supprimer le compte de {{fullname}} ?",
+            "successToast": "Utilisateur supprimé avec succès"
         },
         "table": {
             "loadingMessage": "Chargement des utilisateurs...",

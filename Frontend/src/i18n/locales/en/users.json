@@ -10,6 +10,9 @@
         },
         "fetchUsers": {
             "default": "Failed to fetch the list of user accounts"
+        },
+        "deleteUser": {
+            "default": "Failed to delete the account"
         }
     },
     "stats": {
@@ -52,6 +55,11 @@
                     "copyPassword": "Copy password"
                 }
             }
+        },
+        "deleteUser": {
+            "title": "Confirm account deletion",
+            "message": "Are you sure you want to delete the account of {{fullname}} ?",
+            "successToast": "User successfully deleted"
         },
         "table": {
             "loadingMessage": "Loading users...",

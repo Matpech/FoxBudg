@@ -82,6 +82,13 @@
             "previous": "Previous",
             "next": "Next",
             "last": "Last"
+        },
+        "confirmPrompt": {
+            "defaults": {
+                "message": "Are you sure you want to proceed ?",
+                "confirmButton": "Yes, proceed"
+            },
+            "cancelButton": "Cancel"
         }
     },
     "users": {

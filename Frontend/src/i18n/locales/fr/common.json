@@ -82,6 +82,13 @@
             "previous": "Précédent",
             "next": "Suivant",
             "last": "Fin"
+        },
+        "confirmPrompt": {
+            "defaults": {
+                "message": "Êtes vous sûr de vouloir continuer ?",
+                "confirmButton": "Oui, continuer"
+            },
+            "cancelButton": "Annuler"
         }
     },
     "users": {

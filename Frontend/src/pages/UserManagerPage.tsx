@@ -9,9 +9,10 @@ import GenericButton from "../components/ui/GenericButton"
 import { createPortal } from "react-dom"
 import Modal from "../components/ui/Modal"
 import NewAccountModal from "../components/modals/NewAccountModal"
-import type { UserCreateParams } from "../types/users"
+import type { User, UserCreateParams } from "../types/users"
 import toast from "react-hot-toast"
 import RegistrationSuccessModal from "../components/modals/RegistrationSuccessModal"
+import ConfirmationPrompt from "../components/modals/ConfirmationModal"
 
 export function UserManagerPage() {
     const { t } = useTranslation(['users', 'common'])
@@ -23,6 +24,8 @@ export function UserManagerPage() {
 
     const [createModalOpen, setCreateModalOpen] = useState(false)
     const [createSuccessModalOpen, setCreateSuccessModalOpen] = useState(false)
+    const [userToDelete, setUserToDelete] = useState<User | null>(null)
+
     const [password, setPassword] = useState("")
 
     useEffect(() => {
@@ -45,6 +48,12 @@ export function UserManagerPage() {
         }
 
         setCreateModalOpen(false)
+    }
+
+    async function handleUserDeletion(user: User) {
+        await accountManager.deleteAccount(user.id)
+        toast.success(t('userManager.deleteUser.successToast'))
+        setUserToDelete(null)
     }
 
     return (
@@ -77,7 +86,17 @@ export function UserManagerPage() {
                 )}
             </div>
 
-            <UsersTable users={accountManager.users} />
+            <UsersTable users={accountManager.users} onDelete={(user) => setUserToDelete(user)} />
+
+            {userToDelete && createPortal(
+                <Modal title={t('userManager.deleteUser.title')} onClose={() => setUserToDelete(null)}>
+                    <ConfirmationPrompt
+                        message={t('userManager.deleteUser.message', { fullname: `${userToDelete.first_name} ${userToDelete.last_name.toUpperCase()}` })}
+                        onCancel={() => setUserToDelete(null)}
+                        onConfirm={() => userToDelete && handleUserDeletion(userToDelete)}
+                    />
+                </Modal>, document.body
+            )}
         </main>
     )
 }

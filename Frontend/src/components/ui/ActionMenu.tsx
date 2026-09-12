@@ -74,7 +74,10 @@ function ActionMenu({ children }: Props) {
             <button
                 ref={buttonRef}
                 type="button"
-                onClick={() => setOpen(value => !value)}
+                onClick={(e) => {
+                    e.stopPropagation()
+                    setOpen(value => !value)}
+                }
                 className="p-2 hover:bg-gray-200 dark:hover:bg-zinc-800"
             >
                 ...

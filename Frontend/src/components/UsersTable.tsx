@@ -2,13 +2,18 @@ import { useTranslation } from "react-i18next"
 import type { User } from "../types/users"
 import ActionMenu from "./ui/ActionMenu"
 import GenericButton from "./ui/GenericButton"
+import { useNavigate } from "react-router-dom"
+import { useLocalizedPath } from "../hooks/useLocalizedPath"
 
 interface Props {
     users: User[] | null
+    onDelete: (user: User) => void
 }
 
-function UsersTable({ users }: Props) {
+function UsersTable({ users, onDelete }: Props) {
     const { t } = useTranslation(['users', 'common'])
+    const navigate = useNavigate()
+    const toLocalized = useLocalizedPath()
 
     return (
         <div className="relative">
@@ -41,6 +46,7 @@ function UsersTable({ users }: Props) {
                                 <tr
                                     key={user.id}
                                     className="even:bg-gray-200 dark:even:bg-zinc-900 cursor-pointer"
+                                    onClick={() => navigate(toLocalized(`/profile/${user.id}`))}
                                 >
                                     <td className="px-2 not-md:py-1 wrap-break-word">{user.first_name} {user.last_name.toUpperCase()}</td>
                                     <td className="px-2 not-md:py-1 wrap-break-word">{user.email}</td>
@@ -58,7 +64,7 @@ function UsersTable({ users }: Props) {
 
                                                 <GenericButton
                                                     type="danger"
-                                                    click={() => {}}
+                                                    click={() => onDelete(user)}
                                                 >
                                                     {t('userManager.actions.delete')}
                                                 </GenericButton>

@@ -54,9 +54,23 @@ export function useAccountManager() {
         return response.json
     }
 
+    async function deleteAccount(userId: number) {
+        const response = await request(`/users/${userId}`, {
+            method: "DELETE"
+        })
+
+        if (!response.ok) {
+            if (response.json.error === "NOT_FOUND") throw new Error(t('errors.notFound'))
+            else throw new Error(t('errors.deleteUser.default'))
+        }
+
+        loadUsers()
+    }
+
     return {
         users,
         loadUsers,
-        createAccount
+        createAccount,
+        deleteAccount
     }
 }
