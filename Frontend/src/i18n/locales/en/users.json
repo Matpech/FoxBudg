@@ -58,7 +58,7 @@
         },
         "deleteUser": {
             "title": "Confirm account deletion",
-            "message": "Are you sure you want to delete the account of {{fullname}} ?",
+            "message": "Are you sure you want to delete the account of {{fullname}} ?\n\nThis operation will also deny all pending expense reports created by the user.",
             "successToast": "User successfully deleted"
         },
         "table": {

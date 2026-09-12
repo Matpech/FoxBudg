@@ -27,7 +27,7 @@ function ConfirmationPrompt({ onConfirm, onCancel, delay, message, buttonLabel }
     
     return (
         <div>
-            <p className="dark:text-white">{message || t('components.confirmPrompt.defaults.message')}</p>
+            <p className="dark:text-white whitespace-pre-line">{message || t('components.confirmPrompt.defaults.message')}</p>
 
             <div className="flex justify-end gap-2">
                 <GenericButton

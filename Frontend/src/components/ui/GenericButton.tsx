@@ -12,7 +12,10 @@ interface Props {
 function GenericButton({ type = 'primary', children, click, disabled, className, title }: Props) {
     return (
         <button
-            onClick={() => click()}
+            onClick={(e) => {
+                e.stopPropagation()
+                click()
+            }}
             disabled={disabled}
             title={title}
             className={`

@@ -58,7 +58,7 @@
         },
         "deleteUser": {
             "title": "Confirmer la suppression du compte",
-            "message": "Êtes vous sûr de vouloir supprimer le compte de {{fullname}} ?",
+            "message": "Êtes vous sûr de vouloir supprimer le compte de {{fullname}} ?\n\nCette opération va également refuser toutes les notes de frais en attente de l'utilisateur",
             "successToast": "Utilisateur supprimé avec succès"
         },
         "table": {

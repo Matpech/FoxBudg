@@ -154,23 +154,38 @@ export async function updateUser(userId: number, newDetails: UserUpdateParams, u
  * 
  * This operation will delete all active sessions tied to the user (ON DELETE CASCADE).
  * It will also mark all expense reports from the user with user = NULL (ON DELETE SET NULL).
- * 
- * TODO: Automatically deny all pending expenses requests from the user
+ * Additionally, pending requests from the user are automatically denied.
  * 
  * @param userId The ID of the user to delete
  * @throws NotFoundException or DatabaseException
  */
 export async function deleteUser(userId: number): Promise<void> {
+    const client = await pool.connect()
+
     try {
-        const result = await pool.query(
+        await client.query("BEGIN")
+
+        // First deny all pending expense reports  from the user automatically
+        await client.query(
+            "UPDATE expense_reports SET status = 'denied' WHERE user_id = $1 AND status = 'pending'",
+            [userId]
+        )
+
+        // Then delete the account, checking that it does exist
+        const result = await client.query(
             "DELETE FROM users WHERE id = $1",
             [userId]
         )
 
         if (result.rowCount === 0) throw new NotFoundException("User")
+
+        await client.query("COMMIT")
     } catch (error) {
+        await client.query("ROLLBACK")
         if (error instanceof ApiException) throw error
         throw new DatabaseException(error as Error)
+    } finally {
+        client.release()
     }
 }
 
