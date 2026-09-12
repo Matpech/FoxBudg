@@ -47,8 +47,13 @@
             "header": {
                 "name": "Nom complet",
                 "email": "Adresse email",
-                "role": "Rôle"
+                "role": "Rôle",
+                "actions": "Actions"
             }
+        },
+        "actions": {
+            "update": "Mettre à jour",
+            "delete": "Supprimer le compte"
         },
         "errors": {
             "emailTaken": "Cette adresse email est déjà utilisée",

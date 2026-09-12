@@ -47,8 +47,13 @@
             "header": {
                 "name": "Full name",
                 "email": "Email address",
-                "role": "Role"
+                "role": "Role",
+                "actions": "Actions"
             }
+        },
+        "actions": {
+            "update": "Update details",
+            "delete": "Delete account"
         },
         "errors": {
             "emailTaken": "This email is already in use",
