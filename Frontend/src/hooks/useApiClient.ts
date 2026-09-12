@@ -88,8 +88,21 @@ export function useApiClient() {
             ? await response.json()
             : undefined
         
-        // Check for JWT errors
-        if (response.status === 401 && json?.error === "INVALID_TOKEN") {
+        /**
+         * Check for errors related to JWT authentication.
+         * These errors always use the 401 HTTP response code.
+         * 
+         * There are 2 scenarios that should trigger a JWT refresh :
+         * - "INVALID_TOKEN" error code (JWT has expired)
+         * - "UNAUTHENTICATED" error code with user data stored in localStorage (the cookie no longer exists)
+         */
+        if (
+            response.status === 401 && (
+                json.error === "INVALID_TOKEN"
+                || (json.error === "UNAUTHENTICATED" && authCtx.user)
+            )
+
+        ) {
             const refreshed = await tryRefreshJWT()
             if (refreshed) {
                 response = await fetch(url, {
