@@ -57,12 +57,6 @@ function UsersTable({ users, onDelete }: Props) {
                                                 <p className="dark:text-white font-semibold text-xl">{user.first_name} {user.last_name.toUpperCase()}</p>
 
                                                 <GenericButton
-                                                    click={() => {}}
-                                                >
-                                                    {t('userManager.actions.update')}
-                                                </GenericButton>
-
-                                                <GenericButton
                                                     type="danger"
                                                     click={() => onDelete(user)}
                                                 >
